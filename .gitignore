@@ -17,3 +17,6 @@
 /tmp
 
 vendor
+
+# This project doesn't need to track schema.rb
+db/schema.rb
