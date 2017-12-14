@@ -6,9 +6,11 @@ ARG RAILS_ENV=production
 COPY Gemfile Gemfile.lock ./
 
 RUN bundle install --jobs 20 --retry 5 --path vendor
-RUN bundle binstub puma rake --force
 
 COPY . ./
+
+# I don't know why, but pum binstub creation only works correctly if done after the above COPY
+RUN bundle binstub puma rake --force
 
 ## Run this last to make sure permissions are all correct
 RUN mkdir -p \
