@@ -2,6 +2,8 @@ Rails.application.routes.draw do
 
   get 'main/hello'
 
+  get 'monitors/lb'
+
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
