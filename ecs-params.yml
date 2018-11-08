@@ -1,12 +1,12 @@
 version: 1
 task_definition:
-  # ecs_network_mode: awsvpc # required for Fargate
+  ecs_network_mode: awsvpc # required for Fargate
   task_execution_role: arn:aws:iam::056154071827:role/ecsTaskExecutionRole # required for Fargate
   task_size:
     cpu_limit: 512 # required for Fargate
     mem_limit: 2048 # required for Fargate
   services:
-    rails-infrastructure-canary-staging-app:
+    rails-infrastructure-canary-lab:
         cpu_share: 256
         mem_limit: 1.0GB
 run_params:
