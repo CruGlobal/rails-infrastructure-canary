@@ -7,7 +7,7 @@ services:
       - "0:80" # dynamic ports not supported on Fargate
     # encrypted secrets from AWS SSM Parameter Store
     env_file:
-      - stage.env
+      - $CLUSTER.env
     # unecrypted env vars
     # environment:
     restart: always
