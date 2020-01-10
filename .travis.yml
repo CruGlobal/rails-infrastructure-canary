@@ -1,0 +1,10 @@
+sudo: false
+language: ruby
+cache:
+  bundler: true
+
+script:
+  - bundle exec rake test
+  - bundle exec bundle audit check --update
+  - bundle exec brakeman -A -z --ensure-latest --no-pager -x UnscopedFind,ForgerySetting
+  - bundle exec standardrb
