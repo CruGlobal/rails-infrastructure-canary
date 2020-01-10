@@ -65,3 +65,7 @@ gem 'syslog-logger'
 
 gem 'dotenv-rails'
 gem 'rake', '~> 10.5.0'
+gem 'lograge'
+gem 'ougai', '~> 1.7'
+gem 'dogstatsd-ruby'
+gem 'ddtrace'
