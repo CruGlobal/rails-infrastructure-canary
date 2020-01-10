@@ -1,7 +1,7 @@
-require_relative 'boot'
+require_relative "boot"
 
-require 'rails/all'
-require_relative '../lib/log/logger'
+require "rails/all"
+require_relative "../lib/log/logger"
 
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
@@ -18,10 +18,10 @@ module BaseImageRubyTest
     # the framework and any gems in your application.
 
     # Enable ougai
-    if Rails.env.development? || Rails.const_defined?('Console')
+    if Rails.env.development? || Rails.const_defined?("Console")
       config.logger = Log::Logger.new(STDOUT)
     elsif !Rails.env.test? # use default logger in test env
-      config.logger = Log::Logger.new(Rails.root.join('log', 'datadog.log'))
+      config.logger = Log::Logger.new(Rails.root.join("log", "datadog.log"))
     end
   end
 end
