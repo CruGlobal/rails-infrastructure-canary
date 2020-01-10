@@ -54,7 +54,7 @@ Rails.application.configure do
   config.log_level = :debug
 
   # Prepend all log lines with the following tags.
-  config.log_tags = [ :request_id ]
+  # config.log_tags = [ :request_id ]
 
   # Use a different logger for distributed setups.
   # config.logger = ActiveSupport::TaggedLogging.new(SyslogLogger.new)
@@ -95,6 +95,6 @@ Rails.application.configure do
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
 
-  config.logger = ActiveSupport::TaggedLogging.new(Logger::Syslog.new("canary-#{ENV['ENVIRONMENT']}", Syslog::LOG_LOCAL7))
-  config.log_tags = [->(request) { "ReqID:#{request.uuid}" }]
+  # config.logger = ActiveSupport::TaggedLogging.new(Logger::Syslog.new("canary-#{ENV['ENVIRONMENT']}", Syslog::LOG_LOCAL7))
+  # config.log_tags = [->(request) { "ReqID:#{request.uuid}" }]
 end

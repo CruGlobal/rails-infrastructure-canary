@@ -61,7 +61,10 @@ end
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
-gem 'syslog-logger'
-
+gem 'awesome_print'
+gem 'ddtrace'
+gem 'dogstatsd-ruby'
 gem 'dotenv-rails'
+gem 'lograge'
+gem 'ougai', '~> 1.7'
 gem 'rake', '~> 10.5.0'
