@@ -6,6 +6,9 @@ cache:
     - node_modules
   yarn: true
 
+install:
+  - yarn
+
 script:
   - bundle exec rake test
   - bundle exec bundle audit check --update
