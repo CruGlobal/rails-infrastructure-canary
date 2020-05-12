@@ -7,7 +7,7 @@ cache:
   yarn: true
 
 install:
-  - yarn
+  - yarn --ignore-engines
 
 script:
   - bundle exec rake test
