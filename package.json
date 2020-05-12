@@ -1,5 +1,13 @@
 {
   "name": "rails-infrastructure-canary",
   "private": true,
-  "dependencies": {}
+  "dependencies": {
+    "@rails/activestorage": "^6.0.3",
+    "@rails/ujs": "^6.0.3",
+    "@rails/webpacker": "4.2.2",
+    "turbolinks": "^5.2.0"
+  },
+  "devDependencies": {
+    "webpack-dev-server": "^3.11.0"
+  }
 }
