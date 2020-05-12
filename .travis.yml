@@ -6,7 +6,7 @@ cache:
     - node_modules
   yarn: true
 
-install:
+before_install:
   - yarn --ignore-engines
 
 script:
