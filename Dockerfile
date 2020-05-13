@@ -18,6 +18,8 @@ COPY . ./
 # I don't know why, but pum binstub creation only works correctly if done after the above COPY
 RUN bundle binstub puma rake --force
 
+RUN bundle exec rails assets:precompile RAILS_ENV=production
+
 ## Run this last to make sure permissions are all correct
 RUN mkdir -p \
     /home/app/webapp/tmp \
