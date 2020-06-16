@@ -8,6 +8,7 @@ cache:
 
 before_install:
   - yarn --ignore-engines
+  - bundle config gems.contribsys.com ${SIDEKIQ_CREDS}
 
 script:
   - bundle exec rake test
