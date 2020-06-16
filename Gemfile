@@ -1,4 +1,8 @@
 source "https://rubygems.org"
+source "https://gems.contribsys.com/" do
+  gem "sidekiq-pro"
+end
+
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 ruby "2.6.6"
@@ -62,4 +66,7 @@ gem "dotenv-rails"
 gem "lograge"
 gem "ougai", "~> 1.7"
 gem "rake"
+gem "redis-actionpack"
+gem "redis-namespace"
+gem "sidekiq", "< 6"
 gem "standard"
