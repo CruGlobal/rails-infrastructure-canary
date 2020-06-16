@@ -17,6 +17,12 @@ module BaseImageRubyTest
     # -- all .rb files in that directory are automatically loaded after loading
     # the framework and any gems in your application.
 
+    config.active_job.queue_adapter = :sidekiq
+
+    redis_conf = YAML.safe_load(ERB.new(File.read(Rails.root.join("config", "redis.yml"))).result, [Symbol], [], true)["cache"]
+    redis_conf[:url] = "redis://" + redis_conf[:host] + "/" + redis_conf[:db].to_s
+    config.cache_store = :redis_cache_store, redis_conf
+
     # Enable ougai
     if Rails.env.development? || Rails.const_defined?("Console")
       config.logger = Log::Logger.new(STDOUT)
