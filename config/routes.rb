@@ -6,4 +6,6 @@ Rails.application.routes.draw do
   get "main/hello"
   get "monitors/lb"
   root "main#hello"
+
+  mount Sidekiq::Web => "/sidekiq"
 end
