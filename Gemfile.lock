@@ -176,8 +176,6 @@ GEM
       actionpack (>= 5, < 7)
       redis-rack (>= 2.1.0, < 3)
       redis-store (>= 1.1.0, < 2)
-    redis-namespace (1.7.0)
-      redis (>= 3.0.4)
     redis-rack (2.1.2)
       rack (>= 2.0.8, < 3)
       redis-store (>= 1.2, < 2)
@@ -284,7 +282,6 @@ DEPENDENCIES
   rails (~> 6.0.3)
   rake
   redis-actionpack
-  redis-namespace
   sass-rails (>= 6)
   selenium-webdriver
   sidekiq (< 6)
