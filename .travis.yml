@@ -15,3 +15,4 @@ script:
   - bundle exec bundle audit check --update
   - bundle exec brakeman -A -z --ensure-latest --no-pager
   - bundle exec standardrb
+  - yarn audit
