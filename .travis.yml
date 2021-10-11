@@ -1,3 +1,4 @@
+dist: focal
 sudo: false
 language: ruby
 cache:
@@ -17,3 +18,8 @@ script:
   - bundle exec brakeman -A -z --ensure-latest --no-pager
   - bundle exec standardrb
   - yarn run improved-yarn-audit --ignore-dev-deps
+
+branches:
+  only:
+    - master
+    - staging
