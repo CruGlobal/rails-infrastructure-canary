@@ -22,14 +22,11 @@ jobs:
         env:
           BUNDLE_GEMS__CONTRIBSYS__COM: ${{ secrets.BUNDLE_GEMS__CONTRIBSYS__COM }}
 
-#     - name: Set up DB
-#       run: bundle exec rails db:setup
-
       - name: Install yarn dependencies
         run: yarn --ignore-engines
 
       - name: Rails tests
-        run: bundle exec rake test
+        run: bundle exec rails test
 
   lint:
     runs-on: ubuntu-latest
