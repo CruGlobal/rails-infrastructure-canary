@@ -2,7 +2,7 @@ name: Ruby Cache
 
 on:
   push:
-    branches: [master]
+    branches: [staging]
 
 jobs:
   cache:
