@@ -25,11 +25,11 @@ jobs:
 #     - name: Set up DB
 #       run: bundle exec rails db:setup
 
-      - name: Install yarn dependencies
-        run: yarn --ignore-engines
+#     - name: Install yarn dependencies
+#       run: yarn --ignore-engines
 
       - name: Rails tests
-        run: bundle exec rails test
+        run: bundle exec rake test
 
   lint:
     runs-on: ubuntu-latest
