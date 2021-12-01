@@ -1,0 +1,62 @@
+name: Ruby
+
+on:
+  pull_request:
+    branches: [master]
+  push:
+    branches: [staging]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    env:
+      RAILS_ENV: test
+
+    steps:
+      - name: Check out files
+        uses: actions/checkout@v2
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+        env:
+          BUNDLE_GEMS__CONTRIBSYS__COM: ${{ secrets.BUNDLE_GEMS__CONTRIBSYS__COM }}
+
+#     - name: Set up DB
+#       run: bundle exec rails db:setup
+
+      - name: Install yarn dependencies
+        run: yarn --ignore-engines
+
+      - name: Rails tests
+        run: bundle exec rails test
+
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out files
+        uses: actions/checkout@v2
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+        env:
+          BUNDLE_GEMS__CONTRIBSYS__COM: ${{ secrets.BUNDLE_GEMS__CONTRIBSYS__COM }}
+
+      - name: Bundle audit
+        run: bundle exec bundle audit check --update --ignore CVE-2015-9284
+
+      - name: Brakeman
+        run: bundle exec brakeman -A -q --ensure-latest --no-pager
+
+      - name: StandardRB
+        run: bundle exec standardrb --format simple
+
+      - name: Install yarn dependencies
+        run: yarn --ignore-engines
+
+      - name: Yarn audit
+        run: yarn run improved-yarn-audit --ignore-dev-deps
