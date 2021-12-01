@@ -35,8 +35,6 @@
 
 vendor
 
-# This project doesn't need to track schema.rb
-db/schema.rb
 .idea
 /public/packs
 /public/packs-test
