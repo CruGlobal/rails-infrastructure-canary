@@ -3,7 +3,7 @@ name: Build
 on:
   push:
     branches:
-      - staging
+      - gha-build-push-ecr
 
 permissions:
   id-token: write
