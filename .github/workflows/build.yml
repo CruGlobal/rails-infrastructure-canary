@@ -1,0 +1,33 @@
+name: Build
+
+on:
+  push:
+    branches:
+      - staging
+
+permissions:
+  id-token: write
+  contents: write
+
+jobs:
+  build:
+
+    name: Build Image
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-region: us-east-1
+          role-to-assume: arn:aws:iam::056154071827:role/rails-infrastructure-canary-stage-TaskRole
+
+      - name: Login to Amazon ECR
+        id: ECR
+        uses: aws-actions/amazon-ecr-login@v1
+
+      - name: Test Credentials
+        run: aws sts get-caller-identity
