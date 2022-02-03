@@ -2,7 +2,9 @@ name: Ruby
 
 on:
   pull_request:
-    branches: [staging]
+    branches: [master]
+  push:
+    branches: [master,staging]
 
 jobs:
   test:
