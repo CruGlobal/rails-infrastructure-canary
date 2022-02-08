@@ -15,4 +15,6 @@ on:
 jobs:
   build:
     name: Build
-    uses: CruGlobal/.github/.github/workflows/build-ecs.yml@v1
+    uses: CruGlobal/.github/.github/workflows/build-ecs.yml@fix-build-number
+    with:
+      workflow-ref: fix-build-number
