@@ -5,6 +5,7 @@ on:
     branches:
       - master
       - staging
+      - build-deploy-ecs
   workflow_dispatch:
     inputs:
       auto-deploy:
