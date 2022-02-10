@@ -23,24 +23,8 @@ jobs:
     needs: build
     if: github.event_name != 'workflow_dispatch' || github.event.inputs.auto-deploy == 'true'
     steps:
-      - uses: actions/github-script@v5
-        env:
-          PROJECT_NAME: ${{ needs.build.outputs.project-name }}
-          ENVIRONMENT: ${{ needs.build.outputs.environment }}
-          BUILD_NUMBER: ${{ needs.build.outputs.build-number }}
+      - uses: CruGlobal/.github/actions/trigger-deploy@v1
         with:
-          github-token: ${{ secrets.CRU_DEPLOY_GITHUB_TOKEN }}
-          script: |
-            const { PROJECT_NAME, ENVIRONMENT, BUILD_NUMBER } = process.env
-            
-            github.rest.actions.createWorkflowDispatch({
-              owner: context.repo.owner,
-              repo: 'cru-deploy',
-              ref: 'main',
-              workflow_id: 'promote-ecs.yml',
-              inputs: {
-                'project-name': PROJECT_NAME,
-                'environment': ENVIRONMENT,
-                'build-number': BUILD_NUMBER,
-              }
-            })
+          project-name: ${{ needs.build.outputs.project-name }}
+          environment: ${{ needs.build.outputs.environment }}
+          build-number: ${{ needs.build.outputs.build-number }}
