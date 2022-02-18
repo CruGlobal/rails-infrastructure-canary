@@ -1,5 +1,6 @@
 .bundle
 .git
+.github
 vendor/cache
 vendor/bundle
 log/*
