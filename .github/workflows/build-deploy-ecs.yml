@@ -4,7 +4,8 @@ on:
   push:
     branches:
       # Automatically build and deploy master and staging. Additional branches may be added.
-      - master
+      # rails-infrastructure-canary doesn't have production infrastructure, so don't build it there.
+      # - master
       - staging
   workflow_dispatch:
     # Allows manual build and deploy of any branch/ref
