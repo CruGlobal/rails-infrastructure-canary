@@ -20,9 +20,7 @@ jobs:
   # Build and push container image to ECR. Builds occur in the project repository.
   build:
     name: Build
-    uses: CruGlobal/.github/.github/workflows/build-ecs.yml@docker-network-action
-    with:
-      workflow-ref: docker-network-action
+    uses: CruGlobal/.github/.github/workflows/build-ecs.yml@v1
 
   # Triggers an ECS deployment in https://github.com/CruGlobal/cru-deploy/actions.
   # All deployments happen in the cru-deploy repo.
