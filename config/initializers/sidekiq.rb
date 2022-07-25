@@ -20,6 +20,6 @@ Sidekiq.configure_server do |config|
   config.redis = redis_settings
 end
 
-Sidekiq.default_worker_options = {backtrace: true}
+Sidekiq.default_job_options = {backtrace: true}
 
 Sidekiq::Pro.dogstatsd = -> { Datadog::Statsd.new(ENV["DATADOG_HOST"], ENV["DATADOG_PORT"]) } unless Rails.env.development? || Rails.env.test?
