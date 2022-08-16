@@ -33,3 +33,5 @@ RUN mkdir -p \
     /home/app/webapp/db \
     /home/app/webapp/log \
     /home/app/webapp/public/uploads
+
+CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/supervisord.conf"]
