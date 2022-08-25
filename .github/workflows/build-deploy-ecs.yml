@@ -6,7 +6,8 @@ on:
       # Automatically build and deploy master and staging. Additional branches may be added.
       # rails-infrastructure-canary doesn't have production infrastructure, so don't build it there.
       # - master
-      - staging
+      # - staging
+      - lab-ecs-v2
   workflow_dispatch:
     # Allows manual build and deploy of any branch/ref
     inputs:
@@ -20,7 +21,9 @@ jobs:
   # Build and push container image to ECR. Builds occur in the project repository.
   build:
     name: Build
-    uses: CruGlobal/.github/.github/workflows/build-ecs.yml@v1
+    uses: CruGlobal/.github/.github/workflows/build-ecs.yml@deploy-lab-ecs
+    with:
+      workflow-ref: deploy-lab-ecs
 
   # Triggers an ECS deployment in https://github.com/CruGlobal/cru-deploy/actions.
   # All deployments happen in the cru-deploy repo.
@@ -30,8 +33,9 @@ jobs:
     needs: build
     if: github.event_name != 'workflow_dispatch' || github.event.inputs.auto-deploy == 'true'
     steps:
-      - uses: CruGlobal/.github/actions/trigger-deploy@v1
+      - uses: CruGlobal/.github/actions/trigger-deploy@deploy-lab-ecs
         with:
+          workflow-ref: deploy-lab-ecs
           github-token: ${{ secrets.CRU_DEPLOY_GITHUB_TOKEN }}
           project-name: ${{ needs.build.outputs.project-name }}
           environment: ${{ needs.build.outputs.environment }}
