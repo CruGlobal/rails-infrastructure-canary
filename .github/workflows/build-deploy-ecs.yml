@@ -21,9 +21,7 @@ jobs:
   # Build and push container image to ECR. Builds occur in the project repository.
   build:
     name: Build
-    uses: CruGlobal/.github/.github/workflows/build-ecs.yml@deploy-lab-ecs
-    with:
-      workflow-ref: deploy-lab-ecs
+    uses: CruGlobal/.github/.github/workflows/build-ecs.yml@v1
 
   # Triggers an ECS deployment in https://github.com/CruGlobal/cru-deploy/actions.
   # All deployments happen in the cru-deploy repo.
