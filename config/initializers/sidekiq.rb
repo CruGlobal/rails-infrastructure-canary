@@ -22,4 +22,4 @@ end
 
 Sidekiq.default_job_options = {backtrace: true}
 
-Sidekiq::Pro.dogstatsd = -> { Datadog::Statsd.new(ENV["DATADOG_HOST"], ENV["DATADOG_PORT"]) } unless Rails.env.development? || Rails.env.test?
+Sidekiq::Pro.dogstatsd = -> { Datadog::Statsd.new socket_path: "/var/run/datadog/dsd.socket" } if ENV["AWS_EXECUTION_ENV"] === "AWS_ECS_EC2"

@@ -1,18 +1,18 @@
 require "ddtrace"
-require "net/http"
 
 Datadog.configure do |c|
   # Global settings
-  c.agent.host = if ENV["AWS_EXECUTION_ENV"] === "AWS_ECS_EC2"
-    Net::HTTP.get(URI("http://169.254.169.254/latest/meta-data/local-ipv4"))
-  else
-    ENV["DATADOG_HOST"]
+  if ENV["AWS_EXECUTION_ENV"] === "AWS_ECS_EC2"
+    c.tracing.transport_options = proc { |t|
+      # Provide local path to trace agent Unix socket
+      t.adapter :unix, "/var/run/datadog/apm.socket"
+    }
+    c.runtime_metrics.statsd = Datadog::Statsd.new socket_path: "var/run/datadog/dsd.socket"
+    c.runtime_metrics.enabled = true
   end
-  c.agent.port = 8126
-  c.runtime_metrics.enabled = true
+
   c.service = ENV["PROJECT_NAME"]
   c.env = ENV["ENVIRONMENT"]
-  c.version = ENV["BUILD_NUMBER"]
 
   # Tracing settings
   c.tracing.analytics.enabled = true
