@@ -1,30 +1,38 @@
+require 'ddtrace'
+require 'net/http'
+
 Datadog.configure do |c|
-  # Tracer
-  c.tracer hostname: ENV["DATADOG_HOST"],
-           port: ENV["DATADOG_PORT"],
-           tags: {app: ENV["PROJECT_NAME"]},
-           debug: false,
-           enabled: (ENV["DATADOG_TRACE"].to_s == "true"),
-           env: Rails.env
+  # Global settings
+  c.agent.host = if ENV["AWS_EXECUTION_ENV"] === "AWS_ECS_EC2"
+                   Net::HTTP.get(URI('http://169.254.169.254/latest/meta-data/local-ipv4'))
+                 else
+                   ENV["DATADOG_HOST"]
+                 end
+  c.agent.port = 8126
+  c.runtime_metrics.enabled = true
+  c.service = ENV["PROJECT_NAME"]
+  c.env = ENV["ENVIRONMENT"]
+  c.version = ENV["BUILD_NUMBER"]
 
-  # Rails
-  c.use :rails,
-    service_name: ENV["PROJECT_NAME"],
-    controller_service: "#{ENV["PROJECT_NAME"]}-controller",
-    cache_service: "#{ENV["PROJECT_NAME"]}-cache",
-    database_service: "#{ENV["PROJECT_NAME"]}-db"
+  # Tracing settings
+  c.tracing.analytics.enabled = true
+  c.tracing.partial_flush.enabled = true
 
-  # Redis
-  c.use :redis, service_name: "#{ENV["PROJECT_NAME"]}-redis"
+  # Instrumentation
+  c.tracing.instrument :rails,
+                       service_name: ENV["PROJECT_NAME"],
+                       controller_service: "#{ENV["PROJECT_NAME"]}-controller",
+                       cache_service: "#{ENV["PROJECT_NAME"]}-cache",
+                       database_service: "#{ENV["PROJECT_NAME"]}-db"
 
-  # Sidekiq
-  c.use :sidekiq, service_name: "#{ENV["PROJECT_NAME"]}-sidekiq"
+  c.tracing.instrument :redis, service_name: "#{ENV["PROJECT_NAME"]}-redis"
 
-  # Net::HTTP
-  c.use :http, service_name: "#{ENV["PROJECT_NAME"]}-http"
+  c.tracing.instrument :sidekiq, service_name: "#{ENV["PROJECT_NAME"]}-sidekiq"
+
+  c.tracing.instrument :http, service_name: "#{ENV["PROJECT_NAME"]}-http"
 end
 
 # skipping the health check: if it returns true, the trace is dropped
-Datadog::Pipeline.before_flush(Datadog::Pipeline::SpanFilter.new { |span|
+Datadog::Tracing.before_flush(Datadog::Tracing::Pipeline::SpanFilter.new { |span|
   span.name == "rack.request" && span.get_tag("http.url") == "/monitors/lb"
 })

@@ -62,7 +62,7 @@ gem "tzinfo-data", platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 gem "awesome_print"
 gem "brakeman"
 gem "bundle-audit"
-gem "ddtrace"
+gem "ddtrace", "~> 1.4"
 gem "dogstatsd-ruby"
 gem "dotenv-rails"
 gem "lograge"
