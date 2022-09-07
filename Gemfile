@@ -5,7 +5,7 @@ end
 
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-ruby "2.7.6"
+ruby "3.0.4"
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem "rails", "~> 6.1.5"
@@ -30,7 +30,7 @@ gem "jbuilder", "~> 2.7"
 # gem 'image_processing', '~> 1.2'
 
 # Reduces boot times through caching; required in config/boot.rb
-gem "bootsnap", ">= 1.4.4", require: false
+gem "bootsnap", ">= 1.9.2", require: false
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

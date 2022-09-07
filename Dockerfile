@@ -1,15 +1,14 @@
-FROM public.ecr.aws/docker/library/ruby:2.7
+FROM public.ecr.aws/docker/library/ruby:3.0-alpine
 
 LABEL com.datadoghq.ad.logs='[{"source": "ruby"}]'
 
 ARG SIDEKIQ_CREDS
 
-# Add Yarn APT repository.
-RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - \
-  && echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list
+# Upgrade alpine packages (useful for security fixes)
+RUN apk upgrade --no-cache
 
-# Install dependencies
-RUN apt-get update -qq && apt-get install -y nodejs yarn && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+# Install rails/app dependencies
+RUN apk --no-cache add sqlite-libs tzdata nodejs yarn
 
 WORKDIR /usr/src/app
 
@@ -23,13 +22,20 @@ RUN gem install bundler -v $(awk '/^BUNDLED WITH/ { getline; print $1; exit }' G
 RUN bundle config --global frozen 1
 RUN bundle config gems.contribsys.com $SIDEKIQ_CREDS
 
-RUN bundle install --jobs 20 --retry 5
+# Install build-dependencies, then install gems, subsequently removing build-dependencies
+RUN apk --no-cache add --virtual build-deps build-base sqlite-dev \
+    && bundle install --jobs 20 --retry 5 \
+    && apk del build-deps
 
+# Copy the application
 COPY . .
 
+# Compile assets
 RUN bundle exec rake assets:precompile RAILS_ENV=production
 
+# Define volumes used by ECS to share public html and extra nginx config with nginx container
 VOLUME /usr/src/app/public
 VOLUME /usr/src/app/nginx-conf
 
+# Command to start rails
 CMD ["bundle", "exec", "puma", "-C", "config/puma.rb"]
