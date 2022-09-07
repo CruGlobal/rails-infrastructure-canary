@@ -1,13 +1,13 @@
-require 'ddtrace'
-require 'net/http'
+require "ddtrace"
+require "net/http"
 
 Datadog.configure do |c|
   # Global settings
   c.agent.host = if ENV["AWS_EXECUTION_ENV"] === "AWS_ECS_EC2"
-                   Net::HTTP.get(URI('http://169.254.169.254/latest/meta-data/local-ipv4'))
-                 else
-                   ENV["DATADOG_HOST"]
-                 end
+    Net::HTTP.get(URI("http://169.254.169.254/latest/meta-data/local-ipv4"))
+  else
+    ENV["DATADOG_HOST"]
+  end
   c.agent.port = 8126
   c.runtime_metrics.enabled = true
   c.service = ENV["PROJECT_NAME"]
@@ -20,10 +20,10 @@ Datadog.configure do |c|
 
   # Instrumentation
   c.tracing.instrument :rails,
-                       service_name: ENV["PROJECT_NAME"],
-                       controller_service: "#{ENV["PROJECT_NAME"]}-controller",
-                       cache_service: "#{ENV["PROJECT_NAME"]}-cache",
-                       database_service: "#{ENV["PROJECT_NAME"]}-db"
+    service_name: ENV["PROJECT_NAME"],
+    controller_service: "#{ENV["PROJECT_NAME"]}-controller",
+    cache_service: "#{ENV["PROJECT_NAME"]}-cache",
+    database_service: "#{ENV["PROJECT_NAME"]}-db"
 
   c.tracing.instrument :redis, service_name: "#{ENV["PROJECT_NAME"]}-redis"
 
