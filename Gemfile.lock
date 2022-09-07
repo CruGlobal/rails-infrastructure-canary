@@ -283,7 +283,7 @@ PLATFORMS
 
 DEPENDENCIES
   awesome_print
-  bootsnap (>= 1.4.4)
+  bootsnap (>= 1.9.2)
   brakeman
   bundle-audit
   byebug
