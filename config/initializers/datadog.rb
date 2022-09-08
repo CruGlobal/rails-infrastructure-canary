@@ -1,4 +1,5 @@
 require "ddtrace"
+require "datadog/statsd"
 
 if ENV["AWS_EXECUTION_ENV"] === "AWS_ECS_EC2"
   Datadog.configure do |c|
