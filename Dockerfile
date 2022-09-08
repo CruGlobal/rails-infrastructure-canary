@@ -24,7 +24,7 @@ RUN bundle config gems.contribsys.com $SIDEKIQ_CREDS
 
 # Install build-dependencies, then install gems, subsequently removing build-dependencies
 RUN apk --no-cache add --virtual build-deps build-base sqlite-dev \
-    && bundle install --jobs 20 --retry 5 \
+    && bundle install --jobs 20 --retry 2 \
     && apk del build-deps
 
 # Copy the application
