@@ -31,7 +31,7 @@ RUN apk --no-cache add --virtual build-deps build-base sqlite-dev \
 COPY . .
 
 # Compile assets
-RUN bundle exec rake assets:precompile RAILS_ENV=production
+RUN RAILS_ENV=production bundle exec rake assets:precompile
 
 # Define volumes used by ECS to share public html and extra nginx config with nginx container
 VOLUME /usr/src/app/public
