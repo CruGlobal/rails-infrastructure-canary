@@ -23,7 +23,7 @@ COPY Gemfile Gemfile.lock ./
 
 # Install bundler version which created the lock file and configure it
 RUN gem install bundler -v $(awk '/^BUNDLED WITH/ { getline; print $1; exit }' Gemfile.lock) \
-    && bundle config --global gems.contribsys.com $SIDEKIQ_CREDS \
+    && bundle config --global gems.contribsys.com $SIDEKIQ_CREDS
 
 # Install build-dependencies, then install gems, subsequently removing build-dependencies
 RUN apk --no-cache add --virtual build-deps build-base sqlite-dev \
