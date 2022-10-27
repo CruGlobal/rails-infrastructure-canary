@@ -20,7 +20,7 @@ module Log
           :time => time,
           :env => Rails.env,
           "dd.trace_id" => Datadog::Tracing.correlation.trace_id,
-          "dd.span_id" => Datadog::Tracing.correlation.span_id,
+          "dd.span_id" => Datadog::Tracing.correlation.span_id
         }.merge(data))
       end
     end
