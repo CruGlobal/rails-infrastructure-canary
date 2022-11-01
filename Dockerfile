@@ -9,9 +9,6 @@ RUN addgroup -g 1000 webapp \
     && mkdir -p /home/webapp/app
 WORKDIR /home/webapp/app
 
-# Environment required to build the application
-ARG SIDEKIQ_CREDS
-
 # Upgrade alpine packages (useful for security fixes)
 RUN apk upgrade --no-cache
 
@@ -22,6 +19,7 @@ RUN apk --no-cache add sqlite-libs tzdata nodejs yarn
 COPY Gemfile Gemfile.lock ./
 
 # Install bundler version which created the lock file and configure it
+ARG SIDEKIQ_CREDS
 RUN gem install bundler -v $(awk '/^BUNDLED WITH/ { getline; print $1; exit }' Gemfile.lock) \
     && bundle config --global gems.contribsys.com $SIDEKIQ_CREDS
 
@@ -32,6 +30,9 @@ RUN apk --no-cache add --virtual build-deps build-base sqlite-dev \
 
 # Copy the application
 COPY . .
+
+# Environment required to build the application
+ARG RAILS_ENV=production
 
 # Compile assets and fix permissions
 RUN RAILS_ENV=production bundle exec rake assets:precompile \
