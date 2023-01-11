@@ -4,3 +4,4 @@
 vendor/cache
 vendor/bundle
 log/*
+node_modules

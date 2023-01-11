@@ -5,7 +5,7 @@ end
 
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-ruby "2.7.7"
+ruby "3.0.5"
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem "rails", "~> 6.1.5"
@@ -62,8 +62,8 @@ gem "tzinfo-data", platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 gem "awesome_print"
 gem "brakeman"
 gem "bundle-audit"
-gem "ddtrace"
-gem "dogstatsd-ruby"
+gem "ddtrace", "~> 1.4"
+gem "dogstatsd-ruby", "~> 5.3"
 gem "dotenv-rails"
 gem "lograge"
 gem "ougai", "~> 1.7"

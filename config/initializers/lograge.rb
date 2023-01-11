@@ -1,5 +1,5 @@
 Rails.application.configure do
-  config.logger = Log::Logger.new(STDOUT)
+  config.logger = Log::Logger.new($stdout)
   config.lograge.enabled = true
   config.lograge.formatter = Class.new do |fmt|
     def fmt.call(data)
@@ -11,12 +11,12 @@ Rails.application.configure do
   config.lograge.custom_options = lambda do |event|
     exceptions = %w[controller action format id]
     {
-      params: event.payload[:params].except(*exceptions),
+      params: event.payload[:params].except(*exceptions)
     }
   end
   config.lograge.custom_payload do |controller|
     {
-      request: controller.request,
+      request: controller.request
     }
   end
 end
