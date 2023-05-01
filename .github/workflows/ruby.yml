@@ -15,7 +15,7 @@ jobs:
 
     steps:
       - name: Check out files
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
@@ -24,8 +24,13 @@ jobs:
         env:
           BUNDLE_GEMS__CONTRIBSYS__COM: ${{ secrets.BUNDLE_GEMS__CONTRIBSYS__COM }}
 
-      - name: Install yarn dependencies
-        run: yarn --ignore-engines
+      - name: Set up node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16.20.0
+
+      - name: Install yarn dependencies and precompile assets
+        run: bundle exec rails assets:precompile
 
       - name: Rails tests
         run: bundle exec rails test
@@ -34,7 +39,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check out files
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
