@@ -7,7 +7,7 @@ module Log
     include ActiveSupport::LoggerSilence
 
     def initialize(*args)
-      @readable = args[0] == $stdout
+      @readable = args[0] == STDOUT
       super
     end
 
