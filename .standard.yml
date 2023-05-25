@@ -1,2 +1,6 @@
 plugins:
   - standard-rails
+ignore:
+  - 'lib/log/logger.rb':
+      - Rails/EnvironmentVariableAccess
+      - Style/GlobalStdStream
