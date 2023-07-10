@@ -71,3 +71,6 @@ gem "rake"
 gem "redis-actionpack"
 gem "sidekiq"
 gem "standard"
+
+# Temporary security fix until new Ruby release
+gem "uri", "~> 0.10.3"
