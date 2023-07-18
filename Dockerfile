@@ -15,7 +15,7 @@ WORKDIR /home/webapp/app
 RUN apk upgrade --no-cache
 
 # Install rails/app dependencies
-RUN apk --no-cache add sqlite-libs tzdata nodejs=~16.20 yarn
+RUN apk --no-cache add sqlite-libs tzdata
 
 # Copy dependency definitions and lock files
 COPY Gemfile Gemfile.lock ./
