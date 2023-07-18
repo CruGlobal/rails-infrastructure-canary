@@ -48,3 +48,6 @@ jobs:
 
       - name: StandardRB
         run: bundle exec standardrb --format simple
+
+      - name: JavaScript audit
+        run: bin/importmap audit
