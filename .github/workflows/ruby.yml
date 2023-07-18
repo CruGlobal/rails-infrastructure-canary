@@ -25,7 +25,7 @@ jobs:
           BUNDLE_GEMS__CONTRIBSYS__COM: ${{ secrets.BUNDLE_GEMS__CONTRIBSYS__COM }}
 
       - name: Rails tests
-        run: bundle exec rails test
+        run: CI=true bundle exec rails test
 
   lint:
     runs-on: ubuntu-latest
