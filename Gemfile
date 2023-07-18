@@ -85,6 +85,7 @@ gem "lograge"
 gem "ougai", "~> 1.7"
 gem "rake"
 gem "redis-actionpack"
+gem "sassc-rails"
 gem "sidekiq"
 gem "standard"
 
