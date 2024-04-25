@@ -74,6 +74,7 @@ GEM
       tzinfo (~> 2.0)
     ast (2.4.2)
     awesome_print (1.9.2)
+    bigdecimal (3.1.7)
     bindex (0.8.1)
     bootsnap (1.13.0)
       msgpack (~> 1.2)
@@ -153,7 +154,8 @@ GEM
     nokogiri (1.16.2)
       mini_portile2 (~> 2.8.2)
       racc (~> 1.4)
-    oj (3.10.0)
+    oj (3.16.3)
+      bigdecimal (>= 3.0)
     ougai (1.8.2)
       oj (~> 3.4)
     parallel (1.22.1)
@@ -246,7 +248,8 @@ GEM
       actionpack (>= 5.2)
       activesupport (>= 5.2)
       sprockets (>= 3.0.0)
-    sqlite3 (1.4.2)
+    sqlite3 (1.7.3)
+      mini_portile2 (~> 2.8.0)
     standard (1.16.1)
       rubocop (= 1.35.1)
       rubocop-performance (= 1.14.3)
@@ -262,7 +265,6 @@ GEM
     tzinfo (2.0.6)
       concurrent-ruby (~> 1.0)
     unicode-display_width (2.3.0)
-    uri (0.10.3)
     web-console (4.2.0)
       actionview (>= 6.0.0)
       activemodel (>= 6.0.0)
@@ -302,11 +304,10 @@ DEPENDENCIES
   stimulus-rails
   turbo-rails
   tzinfo-data
-  uri (~> 0.10.3)
   web-console
 
 RUBY VERSION
-   ruby 3.1.4p223
+   ruby 3.1.5p252
 
 BUNDLED WITH
    2.3.11
