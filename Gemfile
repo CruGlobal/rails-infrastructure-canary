@@ -5,7 +5,7 @@ end
 
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-ruby "3.1.4"
+ruby "3.1.5"
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem "rails", "~> 7.0.6"
@@ -88,6 +88,3 @@ gem "redis-actionpack"
 gem "sassc-rails"
 gem "sidekiq", "~> 6.5"
 gem "standard"
-
-# Temporary security fix until new Ruby release
-gem "uri", "~> 0.10.3"
