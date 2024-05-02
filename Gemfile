@@ -5,7 +5,7 @@ end
 
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-ruby "3.1.4"
+ruby "3.1.5"
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem "rails", "~> 7.0.6"
@@ -14,7 +14,7 @@ gem "rails", "~> 7.0.6"
 gem "sprockets-rails"
 
 # Use sqlite3 as the database for Active Record
-gem "sqlite3", "~> 1.4"
+gem "sqlite3", "~> 1.4", force_ruby_platform: true # needed with Rails < 7.1 and Alpine 3.19
 
 # Use Puma as the app server
 gem "puma", "~> 5.0"
@@ -88,6 +88,3 @@ gem "redis-actionpack"
 gem "sassc-rails"
 gem "sidekiq", "~> 6.5"
 gem "standard"
-
-# Temporary security fix until new Ruby release
-gem "uri", "~> 0.10.3"
