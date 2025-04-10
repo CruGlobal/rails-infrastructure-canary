@@ -78,6 +78,7 @@ end
 gem "awesome_print"
 gem "brakeman"
 gem "bundle-audit"
+gem "concurrent-ruby", "1.3.4" # remove when upgrading to Rails 7.1
 gem "ddtrace", "~> 1.4"
 gem "dogstatsd-ruby", "~> 5.3"
 gem "dotenv-rails"
