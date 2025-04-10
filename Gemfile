@@ -82,6 +82,8 @@ gem "concurrent-ruby", "1.3.4" # remove when upgrading to Rails 7.1
 gem "ddtrace", "~> 1.4"
 gem "dogstatsd-ruby", "~> 5.3"
 gem "dotenv-rails"
+# https://github.com/sass-contrib/sass-embedded-host-ruby/issues/210
+gem 'google-protobuf', force_ruby_platform: true if RUBY_PLATFORM.include?('linux-musl')
 gem "lograge"
 gem "ougai", "~> 1.7"
 gem "rake"
