@@ -5,7 +5,7 @@ end
 
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-ruby "3.1.5"
+ruby file: ".ruby-version"
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem "rails", "~> 7.0.6"
@@ -78,13 +78,16 @@ end
 gem "awesome_print"
 gem "brakeman"
 gem "bundle-audit"
+gem "concurrent-ruby", "1.3.4" # remove when upgrading to Rails 7.1
 gem "ddtrace", "~> 1.4"
 gem "dogstatsd-ruby", "~> 5.3"
 gem "dotenv-rails"
+# https://github.com/sass-contrib/sass-embedded-host-ruby/issues/210
+gem "google-protobuf", force_ruby_platform: true if RUBY_PLATFORM.include?("linux-musl")
 gem "lograge"
 gem "ougai", "~> 1.7"
 gem "rake"
 gem "redis-actionpack"
-gem "sassc-rails"
+gem "sassc-embedded"
 gem "sidekiq", "~> 6.5"
 gem "standard"
