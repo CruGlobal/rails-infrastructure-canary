@@ -3,21 +3,19 @@ source "https://gems.contribsys.com/" do
   gem "sidekiq-pro"
 end
 
-git_source(:github) { |repo| "https://github.com/#{repo}.git" }
-
 ruby file: ".ruby-version"
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem "rails", "~> 7.0.6"
+gem "rails", "~> 7.1.5"
 
 # The original asset pipeline for Rails [https://github.com/rails/sprockets-rails]
 gem "sprockets-rails"
 
 # Use sqlite3 as the database for Active Record
-gem "sqlite3", "~> 1.4", force_ruby_platform: true # needed with Rails < 7.1 and Alpine 3.19
+gem "sqlite3", ">= 1.4", force_ruby_platform: true # needed with Rails < 7.1 and Alpine 3.19
 
 # Use Puma as the app server
-gem "puma", "~> 5.0"
+gem "puma", ">= 5.0"
 
 # Use JavaScript with ESM import maps [https://github.com/rails/importmap-rails]
 gem "importmap-rails"
@@ -32,7 +30,7 @@ gem "stimulus-rails"
 gem "jbuilder"
 
 # Use Redis adapter to run Action Cable in production
-# gem 'redis', '~> 4.0'
+# gem "redis", ">= 4.0.1"
 
 # Use Kredis to get higher-level data types in Redis [https://github.com/rails/kredis]
 # gem "kredis"
@@ -41,20 +39,17 @@ gem "jbuilder"
 # gem "bcrypt", "~> 3.1.7"
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
-gem "tzinfo-data", platforms: %i[mingw mswin x64_mingw jruby]
+gem "tzinfo-data", platforms: %i[ windows jruby ]
 
 # Reduces boot times through caching; required in config/boot.rb
 gem "bootsnap", require: false
-
-# Use Sass to process CSS
-# gem "sassc-rails"
 
 # Use Active Storage variants [https://guides.rubyonrails.org/active_storage_overview.html#transforming-images]
 # gem "image_processing", "~> 1.2"
 
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
-  gem "debug", platforms: %i[mri mingw x64_mingw]
+  gem "debug", platforms: %i[ mri windows ]
 end
 
 group :development do
@@ -72,14 +67,12 @@ group :test do
   # Use system testing [https://guides.rubyonrails.org/testing.html#system-testing]
   # gem "capybara"
   # gem "selenium-webdriver"
-  # gem "webdrivers"
 end
 
 gem "awesome_print"
 gem "brakeman"
 gem "bundle-audit"
-gem "concurrent-ruby", "1.3.4" # remove when upgrading to Rails 7.1
-gem "ddtrace", "~> 1.4"
+gem "datadog"
 gem "dogstatsd-ruby", "~> 5.3"
 gem "dotenv-rails"
 # https://github.com/sass-contrib/sass-embedded-host-ruby/issues/210
