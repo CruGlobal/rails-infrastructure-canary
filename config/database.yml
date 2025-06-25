@@ -22,7 +22,7 @@ test:
 
 staging:
   <<: *default
-  database: db/staging.sqlite3
+  database: storage/staging.sqlite3
 
 production:
   <<: *default
