@@ -7,7 +7,7 @@
       "check_name": "EOLRails",
       "message": "Support for Rails 7.1.5.2 ends on 2025-10-01",
       "file": "Gemfile.lock",
-      "line": 460,
+      "line": 464,
       "link": "https://brakemanscanner.org/docs/warning_types/unmaintained_dependency/",
       "code": null,
       "render_path": null,
