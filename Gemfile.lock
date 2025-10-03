@@ -103,10 +103,10 @@ GEM
     concurrent-ruby (1.3.5)
     connection_pool (2.5.4)
     crass (1.0.6)
-    datadog (2.17.0)
+    datadog (2.21.0)
       datadog-ruby_core_source (~> 3.4, >= 3.4.1)
       libdatadog (~> 18.1.0.1.0)
-      libddwaf (~> 1.22.0.0.2)
+      libddwaf (~> 1.24.1.2.1)
       logger
       msgpack
     datadog-ruby_core_source (3.4.1)
@@ -114,7 +114,7 @@ GEM
     debug (1.8.0)
       irb (>= 1.5.0)
       reline (>= 0.3.1)
-    dogstatsd-ruby (5.6.6)
+    dogstatsd-ruby (5.7.1)
     dotenv (3.1.8)
     dotenv-rails (3.1.8)
       dotenv (= 3.1.8)
@@ -144,13 +144,13 @@ GEM
       reline (>= 0.4.2)
     jbuilder (2.10.0)
       activesupport (>= 5.0.0)
-    json (2.12.2)
+    json (2.13.2)
     language_server-protocol (3.17.0.5)
     libdatadog (18.1.0.1.0)
     libdatadog (18.1.0.1.0-x86_64-linux)
-    libddwaf (1.22.0.0.2)
+    libddwaf (1.24.1.2.1)
       ffi (~> 1.0)
-    libddwaf (1.22.0.0.2-x86_64-linux)
+    libddwaf (1.24.1.2.1-x86_64-linux)
       ffi (~> 1.0)
     lint_roller (1.1.0)
     logger (1.7.0)
@@ -193,13 +193,13 @@ GEM
     ougai (1.8.2)
       oj (~> 3.4)
     parallel (1.27.0)
-    parser (3.3.8.0)
+    parser (3.3.9.0)
       ast (~> 2.4.1)
       racc
     pp (0.6.2)
       prettyprint
     prettyprint (0.2.0)
-    prism (1.4.0)
+    prism (1.5.1)
     psych (5.2.6)
       date
       stringio
@@ -260,12 +260,12 @@ GEM
       redis-store (>= 1.2, < 2)
     redis-store (1.9.1)
       redis (>= 4, < 5)
-    regexp_parser (2.10.0)
+    regexp_parser (2.11.3)
     reline (0.6.2)
       io-console (~> 0.5)
     request_store (1.7.0)
       rack (>= 1.4)
-    rubocop (1.75.8)
+    rubocop (1.80.2)
       json (~> 2.3)
       language_server-protocol (~> 3.17.0.2)
       lint_roller (~> 1.1.0)
@@ -273,10 +273,10 @@ GEM
       parser (>= 3.3.0.2)
       rainbow (>= 2.2.2, < 4.0)
       regexp_parser (>= 2.9.3, < 3.0)
-      rubocop-ast (>= 1.44.0, < 2.0)
+      rubocop-ast (>= 1.46.0, < 2.0)
       ruby-progressbar (~> 1.7)
       unicode-display_width (>= 2.4.0, < 4.0)
-    rubocop-ast (1.45.1)
+    rubocop-ast (1.46.0)
       parser (>= 3.3.7.2)
       prism (~> 1.4)
     rubocop-performance (1.25.0)
@@ -307,10 +307,10 @@ GEM
       sprockets (>= 3.0.0)
     sqlite3 (1.7.3)
       mini_portile2 (~> 2.8.0)
-    standard (1.50.0)
+    standard (1.51.1)
       language_server-protocol (~> 3.17.0.2)
       lint_roller (~> 1.0)
-      rubocop (~> 1.75.5)
+      rubocop (~> 1.80.2)
       standard-custom (~> 1.0.0)
       standard-performance (~> 1.8)
     standard-custom (1.0.2)
@@ -330,9 +330,9 @@ GEM
       railties (>= 6.0.0)
     tzinfo (2.0.6)
       concurrent-ruby (~> 1.0)
-    unicode-display_width (3.1.4)
-      unicode-emoji (~> 4.0, >= 4.0.4)
-    unicode-emoji (4.0.4)
+    unicode-display_width (3.2.0)
+      unicode-emoji (~> 4.1)
+    unicode-emoji (4.1.0)
     web-console (4.2.0)
       actionview (>= 6.0.0)
       activemodel (>= 6.0.0)
@@ -403,11 +403,11 @@ CHECKSUMS
   concurrent-ruby (1.3.5) sha256=813b3e37aca6df2a21a3b9f1d497f8cbab24a2b94cab325bffe65ee0f6cbebc6
   connection_pool (2.5.4) sha256=e9e1922327416091f3f6542f5f4446c2a20745276b9aa796dd0bb2fd0ea1e70a
   crass (1.0.6) sha256=dc516022a56e7b3b156099abc81b6d2b08ea1ed12676ac7a5657617f012bd45d
-  datadog (2.17.0) sha256=871959b41cfa358ee461a0ce0b666e68ea21cde499d829126f5cff5ae04f927e
+  datadog (2.21.0) sha256=2364d02ab6cb13c0a6c0825ca710e1a909bab014d94b174f2107b0c5ab7aeb4f
   datadog-ruby_core_source (3.4.1) sha256=fa40f1c3c8f764b6651a6443382b57d39aeb3c9f94b5af98f499bcfc678a2fb9
   date (3.4.1) sha256=bf268e14ef7158009bfeaec40b5fa3c7271906e88b196d958a89d4b408abe64f
   debug (1.8.0) sha256=502bd1ad41a9a4b51f557f181cd13650c746390a82b5d11a5d2c81600ca013da
-  dogstatsd-ruby (5.6.6) sha256=7706ba4a34c6f541463730af280c3ac3d45f18774fcaf38a5b6e53f563f7f355
+  dogstatsd-ruby (5.7.1) sha256=d2e211f9635d6bbe773e152e00fd4cb9f165d26e10356dbef8f917f7a9e5d58c
   dotenv (3.1.8) sha256=9e1176060ced581f8e6ce4384e91361817763a76e3c625c8bddc18b35bd392c3
   dotenv-rails (3.1.8) sha256=46c9d1226a8b58a83b5f61325aa8cffd25cea1c0fafdfbbbee1e5dfea77980c4
   drb (2.2.3) sha256=0b00d6fdb50995fe4a45dea13663493c841112e4068656854646f418fda13373
@@ -423,12 +423,12 @@ CHECKSUMS
   io-console (0.8.1) sha256=1e15440a6b2f67b6ea496df7c474ed62c860ad11237f29b3bd187f054b925fcb
   irb (1.15.2) sha256=222f32952e278da34b58ffe45e8634bf4afc2dc7aa9da23fed67e581aa50fdba
   jbuilder (2.10.0) sha256=0ee4647ee05af8677a28316cb05fa046084e7e5f15a04623c09676d5ddcdbf70
-  json (2.12.2) sha256=ba94a48ad265605c8fa9a50a5892f3ba6a02661aa010f638211f3cb36f44abf4
+  json (2.13.2) sha256=02e1f118d434c6b230a64ffa5c8dee07e3ec96244335c392eaed39e1199dbb68
   language_server-protocol (3.17.0.5) sha256=fd1e39a51a28bf3eec959379985a72e296e9f9acfce46f6a79d31ca8760803cc
   libdatadog (18.1.0.1.0) sha256=fbdd74d24c2474544418f183a31725c4ee4da85341c1310dcbe292c5ec151b09
   libdatadog (18.1.0.1.0-x86_64-linux) sha256=e5c2a5b0d15aa1edd426a62f687b0efbad6d63592a7022bcbecb735b91d7e048
-  libddwaf (1.22.0.0.2) sha256=c4ccf484de31fb3433cccd24c5fde6050bb15482fc5a83b2554c685737fd9cbf
-  libddwaf (1.22.0.0.2-x86_64-linux) sha256=6b6d55f67a287ff80fe306d625f393e37246d2022689d879f65dbab3a5b5287c
+  libddwaf (1.24.1.2.1) sha256=35652cdfde192d32f305eabcaab4e72bea9a9e7fd6aa4f618c3985de642df6d8
+  libddwaf (1.24.1.2.1-x86_64-linux) sha256=5be132426360574052a1ed66c34cbe366eb2de814782e59990008673097678cd
   lint_roller (1.1.0) sha256=2c0c845b632a7d172cb849cc90c1bce937a28c5c8ccccb50dfd46a485003cc87
   logger (1.7.0) sha256=196edec7cc44b66cfb40f9755ce11b392f21f7967696af15d274dde7edff0203
   lograge (0.14.0) sha256=42371a75823775f166f727639f5ddce73dd149452a55fc94b90c303213dc9ae1
@@ -450,10 +450,10 @@ CHECKSUMS
   oj (3.16.3) sha256=d0088a0c78ae4aa0eeaeeb9c3a592571432ba39f9829e5ac37b3f24c53eab63c
   ougai (1.8.2) sha256=7deceb265bbb57d040a5fc4dcc718521280aab0107fb4698ee28826c6a85d520
   parallel (1.27.0) sha256=4ac151e1806b755fb4e2dc2332cbf0e54f2e24ba821ff2d3dcf86bf6dc4ae130
-  parser (3.3.8.0) sha256=2476364142b307fa5a1b1ece44f260728be23858a9c71078e956131a75453c45
+  parser (3.3.9.0) sha256=94d6929354b1a6e3e1f89d79d4d302cc8f5aa814431a6c9c7e0623335d7687f2
   pp (0.6.2) sha256=947ec3120c6f92195f8ee8aa25a7b2c5297bb106d83b41baa02983686577b6ff
   prettyprint (0.2.0) sha256=2bc9e15581a94742064a3cc8b0fb9d45aae3d03a1baa6ef80922627a0766f193
-  prism (1.4.0) sha256=dc0e3e00e93160213dc2a65519d9002a4a1e7b962db57d444cf1a71565bb703e
+  prism (1.5.1) sha256=b40c1b76ccb9fcccc3d1553967cda6e79fa7274d8bfea0d98b15d27a6d187134
   psych (5.2.6) sha256=814328aa5dcb6d604d32126a20bc1cbcf05521a5b49dbb1a8b30a07e580f316e
   puma (5.6.9) sha256=20701b2451080ec8d6d78d2e4b5a2913e6d0b865a51d704a4d60db8fd39a4228
   racc (1.8.1) sha256=4a7f6929691dbec8b5209a0b373bc2614882b55fc5d2e447a21aaa691303d62f
@@ -473,11 +473,11 @@ CHECKSUMS
   redis-client (0.26.0) sha256=71e048d75650eb23b8387c71c620a49edb6d2ffc48a565734aa81efca34e90ae
   redis-rack (2.1.4) sha256=0872eecb303e483c3863d6bd0d47323d230640d41c1a4ac4a2c7596ec0b1774c
   redis-store (1.9.1) sha256=7b4c7438d46f7b7ce8f67fc0eda3a04fc67d32d28cf606cc98a5df4d2b77071d
-  regexp_parser (2.10.0) sha256=cb6f0ddde88772cd64bff1dbbf68df66d376043fe2e66a9ef77fcb1b0c548c61
+  regexp_parser (2.11.3) sha256=ca13f381a173b7a93450e53459075c9b76a10433caadcb2f1180f2c741fc55a4
   reline (0.6.2) sha256=1dad26a6008872d59c8e05244b119347c9f2ddaf4a53dce97856cd5f30a02846
   request_store (1.7.0) sha256=e1b75d5346a315f452242a68c937ef8e48b215b9453a77a6c0acdca2934c88cb
-  rubocop (1.75.8) sha256=c80ab4286c5dcfc49d7ad1787cdba5569b63b58c96ee7afde4ec47a9c8a85be9
-  rubocop-ast (1.45.1) sha256=94042e49adc17f187ba037b33f941ba7398fede77cdf4bffafba95190a473a3e
+  rubocop (1.80.2) sha256=6485f30fefcf5c199db3b91e5e253b1ef43f7e564784e2315255809a3dd9abf4
+  rubocop-ast (1.46.0) sha256=0da7f6ad5b98614f89b74f11873c191059c823eae07d6ffd40a42a3338f2232b
   rubocop-performance (1.25.0) sha256=6f7d03568a770054117a78d0a8e191cefeffb703b382871ca7743831b1a52ec1
   ruby-progressbar (1.13.0) sha256=80fc9c47a9b640d6834e0dc7b3c94c9df37f08cb072b7761e4a71e22cff29b33
   sass-embedded (1.93.2) sha256=b45c7d6eb07f7a92bb921106711efb4f51e74208913db9ed37770ae9887d21be
@@ -489,7 +489,7 @@ CHECKSUMS
   sprockets (4.2.0) sha256=5c273487255c47523f30c0b673310fce70a09ca060a6bbcd3e5d0d489e19024c
   sprockets-rails (3.4.2) sha256=36d6327757ccf7460a00d1d52b2d5ef0019a4670503046a129fa1fb1300931ad
   sqlite3 (1.7.3) sha256=fa77f63c709548f46d4e9b6bb45cda52aa3881aa12cc85991132758e8968701c
-  standard (1.50.0) sha256=b6c67f61fd6cedeec90ee338c6e913d9ccc4c467660ad1575da8aa6ba10f4aec
+  standard (1.51.1) sha256=6d0d98a1fac26d660393f37b3d9c864632bb934b17abfa23811996b20f87faf2
   standard-custom (1.0.2) sha256=424adc84179a074f1a2a309bb9cf7cd6bfdb2b6541f20c6bf9436c0ba22a652b
   standard-performance (1.8.0) sha256=ed17b7d0e061b2a19a91dd434bef629439e2f32310f22f26acb451addc92b788
   stimulus-rails (1.2.1) sha256=831bbcc0c12ea9c751e0a96b85d9908a0e4b42031964724d5b507166e06f0e8a
@@ -498,8 +498,8 @@ CHECKSUMS
   timeout (0.4.3) sha256=9509f079b2b55fe4236d79633bd75e34c1c1e7e3fb4b56cb5fda61f80a0fe30e
   turbo-rails (1.4.0) sha256=108f2bf0245babfac286301759f80bfc92fbb5db902610cbf7becf911f8ea36e
   tzinfo (2.0.6) sha256=8daf828cc77bcf7d63b0e3bdb6caa47e2272dcfaf4fbfe46f8c3a9df087a829b
-  unicode-display_width (3.1.4) sha256=8caf2af1c0f2f07ec89ef9e18c7d88c2790e217c482bfc78aaa65eadd5415ac1
-  unicode-emoji (4.0.4) sha256=2c2c4ef7f353e5809497126285a50b23056cc6e61b64433764a35eff6c36532a
+  unicode-display_width (3.2.0) sha256=0cdd96b5681a5949cdbc2c55e7b420facae74c4aaf9a9815eee1087cb1853c42
+  unicode-emoji (4.1.0) sha256=4997d2d5df1ed4252f4830a9b6e86f932e2013fbff2182a9ce9ccabda4f325a5
   web-console (4.2.0) sha256=e8f05057a83d6d305d5941fb828d13a25e9aa9b0f3a550f01c308711885433c3
   webrick (1.9.1) sha256=b42d3c94f166f3fb73d87e9b359def9b5836c426fc8beacf38f2184a21b2a989
   websocket-driver (0.8.0) sha256=ed0dba4b943c22f17f9a734817e808bc84cdce6a7e22045f5315aa57676d4962
@@ -507,7 +507,7 @@ CHECKSUMS
   zeitwerk (2.7.3) sha256=b2e86b4a9b57d26ba68a15230dcc7fe6f040f06831ce64417b0621ad96ba3e85
 
 RUBY VERSION
-   ruby 3.2.8p263
+   ruby 3.3.9p170
 
 BUNDLED WITH
    2.7.2
