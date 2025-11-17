@@ -2,7 +2,7 @@
 require "fileutils"
 
 APP_ROOT = File.expand_path("..", __dir__)
-APP_NAME = "base-image-ruby-test"
+APP_NAME = "rails-infrastructure-canary"
 
 def system!(*args)
   system(*args, exception: true)
