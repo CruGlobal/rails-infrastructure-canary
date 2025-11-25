@@ -309,8 +309,9 @@ GEM
       actionpack (>= 6.1)
       activesupport (>= 6.1)
       sprockets (>= 3.0.0)
-    sqlite3 (1.7.3)
+    sqlite3 (2.8.0)
       mini_portile2 (~> 2.8.0)
+    sqlite3 (2.8.0-x86_64-linux-musl)
     standard (1.51.1)
       language_server-protocol (~> 3.17.0.2)
       lint_roller (~> 1.0)
@@ -494,7 +495,8 @@ CHECKSUMS
   sidekiq-pro (7.3.6) sha256=502aae85b41a7dd3de973b7a05a560437628b70aeb59784370cd65a761945cfa
   sprockets (4.2.2) sha256=761e5a49f1c288704763f73139763564c845a8f856d52fba013458f8af1b59b1
   sprockets-rails (3.5.2) sha256=a9e88e6ce9f8c912d349aa5401509165ec42326baf9e942a85de4b76dbc4119e
-  sqlite3 (1.7.3) sha256=fa77f63c709548f46d4e9b6bb45cda52aa3881aa12cc85991132758e8968701c
+  sqlite3 (2.8.0) sha256=88b403fb0ec0992907ef00cfc5db8fae53d284b81f6123f20ca0f7ef85c222e1
+  sqlite3 (2.8.0-x86_64-linux-musl) sha256=9ea480326f09abfeb2001cf8d08077feaac2253baaf5ac06aa530377f4a87ddc
   standard (1.51.1) sha256=6d0d98a1fac26d660393f37b3d9c864632bb934b17abfa23811996b20f87faf2
   standard-custom (1.0.2) sha256=424adc84179a074f1a2a309bb9cf7cd6bfdb2b6541f20c6bf9436c0ba22a652b
   standard-performance (1.8.0) sha256=ed17b7d0e061b2a19a91dd434bef629439e2f32310f22f26acb451addc92b788
