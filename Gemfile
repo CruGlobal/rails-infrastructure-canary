@@ -6,7 +6,8 @@ end
 ruby file: ".ruby-version"
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem "rails", "~> 7.2.3"
+gem "rails", "~> 7.2.3", ">= 7.2.3.1"
+gem "connection_pool", "~> 2.5"
 
 # The original asset pipeline for Rails [https://github.com/rails/sprockets-rails]
 gem "sprockets-rails"
