@@ -40,11 +40,12 @@ jobs:
         env:
           BUNDLE_GEMS__CONTRIBSYS__COM: ${{ secrets.BUNDLE_GEMS__CONTRIBSYS__COM }}
 
-      # --ensure-latest intentionally dropped: Renovate keeps brakeman current
-      # (preset carve-out), so the flag would only re-introduce a race where an
-      # out-of-date brakeman red-walls CI and blocks security auto-merges.
+      # -w2: block only on medium+ confidence findings — weak nudges (e.g. the
+      # Rails-EOL warning) shouldn't wedge merges devs can't individually fix.
+      # --ensure-latest dropped: Renovate keeps brakeman current (preset carve-out),
+      # so the flag would only re-add a race where an out-of-date brakeman blocks CI.
       - name: Brakeman
-        run: bundle exec brakeman -A -q --no-pager
+        run: bundle exec brakeman -A -q --no-pager -w2
 
       - name: StandardRB
         run: bundle exec standardrb --format simple
