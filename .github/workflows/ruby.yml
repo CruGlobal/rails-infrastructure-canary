@@ -40,14 +40,34 @@ jobs:
         env:
           BUNDLE_GEMS__CONTRIBSYS__COM: ${{ secrets.BUNDLE_GEMS__CONTRIBSYS__COM }}
 
-      - name: Bundle audit
-        run: bundle exec bundle audit check --update --ignore CVE-2015-9284
-
+      # -w2: block only on medium+ confidence findings — weak nudges (e.g. the
+      # Rails-EOL warning) shouldn't wedge merges devs can't individually fix.
+      # --ensure-latest dropped: Renovate keeps brakeman current (preset carve-out),
+      # so the flag would only re-add a race where an out-of-date brakeman blocks CI.
       - name: Brakeman
-        run: bundle exec brakeman -A -q --ensure-latest --no-pager
+        run: bundle exec brakeman -A -q --no-pager -w2
 
       - name: StandardRB
         run: bundle exec standardrb --format simple
+
+  # Known-vulnerability status. NOT a required check (kept out of the branch
+  # ruleset), so a security backlog — or a vuln Renovate is mid-fixing — never
+  # deadlocks merges. Renovate owns remediation; this is the visible backstop.
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out files
+        uses: actions/checkout@v6
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+        env:
+          BUNDLE_GEMS__CONTRIBSYS__COM: ${{ secrets.BUNDLE_GEMS__CONTRIBSYS__COM }}
+
+      - name: Bundle audit
+        run: bundle exec bundle audit check --update --ignore CVE-2015-9284
 
       - name: JavaScript audit
         run: bin/importmap audit
