@@ -6,13 +6,14 @@ end
 ruby file: ".ruby-version"
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem "rails", "~> 7.2.3", ">= 7.2.3.1"
+gem "rails", "~> 8.0.5"
+# Conflict with redis_cache_store in Rails < 8.1.2 (connection_pool 3.x, Rails #56291)
 gem "connection_pool", "~> 2.5"
 
 # The original asset pipeline for Rails [https://github.com/rails/sprockets-rails]
 gem "sprockets-rails"
 # Use sqlite3 as the database for Active Record
-gem "sqlite3", ">= 1.4"
+gem "sqlite3", ">= 2.1"
 
 # Use Puma as the app server
 gem "puma", "= 7.2.1"
