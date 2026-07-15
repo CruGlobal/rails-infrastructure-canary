@@ -71,9 +71,6 @@ Rails.application.configure do
   # config.generators.apply_rubocop_autocorrect_after_generate!
 
   # --- Custom (app-specific) configuration ---
-  # Suppress logger output for asset requests (sprockets).
-  config.assets.quiet = true
-
   # Whitelist lab hostname.
   config.hosts << "rails-canary-lab.aws.cru.org"
 
