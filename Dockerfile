@@ -49,5 +49,13 @@ VOLUME /home/webapp/app/nginx-conf
 # Run container process as non-root user
 USER webapp
 
-# Command to start rails
-CMD ["bundle", "exec", "puma", "-C", "config/puma.rb"]
+# Thruster fronts Puma (HTTP caching/compression + static file serving).
+# HTTP_PORT=3000 keeps the container listening on the port Puma used to bind
+# (the port the existing ECS task definition / nginx sidecar expects), instead
+# of Thruster's default 80. Puma moves to the internal-only TARGET_PORT —
+# Thruster sets PORT for the child process, and config/puma.rb honors it.
+ENV HTTP_PORT=3000 \
+    TARGET_PORT=3001
+
+# Start server via Thruster by default, this can be overwritten at runtime
+CMD ["./bin/thrust", "./bin/rails", "server"]
