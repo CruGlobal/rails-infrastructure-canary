@@ -1,3 +1,5 @@
+# See https://docs.docker.com/engine/reference/builder/#dockerignore-file for more about ignoring files.
+
 # Ignore git directory.
 /.git/
 /.gitignore
@@ -5,12 +7,42 @@
 # Ignore bundler config.
 /.bundle
 
+# NOTE: deliberate divergence from the skeleton — no "/.env*" ignore here.
+# The committed .env is COPY'd into the image (Dockerfile `COPY . .`) to
+# provide SECRET_KEY_BASE/RAILS_ENV for asset precompilation and boot.
+
+# Ignore all default key files.
+/config/master.key
+/config/credentials/*.key
+
+# Ignore all logfiles and tempfiles.
+/log/*
+/tmp/*
+!/log/.keep
+!/tmp/.keep
+
+# Ignore pidfiles, but keep the directory.
+/tmp/pids/*
+!/tmp/pids/.keep
+
+# Ignore storage (uploaded files in development and any SQLite databases).
+/storage/*
+!/storage/.keep
+/tmp/storage/*
+!/tmp/storage/.keep
+
+# Ignore assets.
+/node_modules/
 /app/assets/builds/*
 !/app/assets/builds/.keep
 /public/assets
 
 # Ignore CI service files.
 /.github
+
+# Ignore Kamal files.
+/config/deploy*.yml
+/.kamal
 
 # Ignore development files
 /.devcontainer
@@ -19,7 +51,7 @@
 /.dockerignore
 /Dockerfile*
 
-vendor/cache
-vendor/bundle
-log/*
+# --- App-specific ---
 node_modules
+vendor/bundle
+vendor/cache
