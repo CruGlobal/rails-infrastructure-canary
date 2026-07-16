@@ -93,7 +93,4 @@ Rails.application.configure do
   # --- Custom (app-specific) configuration ---
   # Do not fall back to assets pipeline if a precompiled asset is missed.
   config.assets.compile = false
-
-  # Disable caching for Action Mailer templates even if Action Controller caching is enabled.
-  config.action_mailer.perform_caching = false
 end
