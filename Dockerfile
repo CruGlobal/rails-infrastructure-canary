@@ -49,13 +49,12 @@ VOLUME /home/webapp/app/nginx-conf
 # Run container process as non-root user
 USER webapp
 
-# Thruster fronts Puma (HTTP caching/compression + static file serving).
-# HTTP_PORT=3000 keeps the container listening on the port Puma used to bind
-# (the port the existing ECS task definition / nginx sidecar expects), instead
-# of Thruster's default 80. Puma moves to the internal-only TARGET_PORT —
-# Thruster sets PORT for the child process, and config/puma.rb honors it.
-ENV HTTP_PORT=3000 \
-    TARGET_PORT=3001
+# Thruster fronts Puma (HTTP caching/compression + static file serving) on its
+# default port 80, proxying to Puma on 3000 — the fl-pos-admin fleet pattern.
+# While the nginx sidecar still exists it proxies straight to Puma:3000
+# (Thruster sits idle); after the cru-terraform nginx removal the ALB points
+# at this container on 80.
+EXPOSE 80
 
 # Start server via Thruster by default, this can be overwritten at runtime
 CMD ["./bin/thrust", "./bin/rails", "server"]
