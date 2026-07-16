@@ -7,9 +7,8 @@
 # Ignore bundler config.
 /.bundle
 
-# Ignore all environment files (except templates).
+# Ignore all environment files.
 /.env*
-!/.env*.erb
 
 # Ignore all logfiles and tempfiles.
 /log/*
@@ -29,9 +28,12 @@
 !/tmp/storage/
 !/tmp/storage/.keep
 
-/public/assets
-
 # Ignore master key for decrypting credentials and more.
 /config/master.key
 
+# --- App-specific ---
+# Compiled assets from `assets:precompile`.
+/public/assets
+
+# JetBrains IDE metadata.
 .idea
