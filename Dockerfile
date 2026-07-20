@@ -56,5 +56,10 @@ USER webapp
 # at this container on 80.
 EXPOSE 80
 
+# Thruster request logs (default on) would interleave a Go slog JSON stream into the
+# same stdout as the app's structured Ougai/lograge logs (Datadog pipeline is keyed on
+# that format) and re-log the silenced health checks; request logging is lograge's job.
+ENV LOG_REQUESTS="false"
+
 # Start server via Thruster by default, this can be overwritten at runtime
 CMD ["./bin/thrust", "./bin/rails", "server"]
