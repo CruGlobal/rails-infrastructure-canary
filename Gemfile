@@ -10,6 +10,8 @@ gem "rails", "~> 8.0.5"
 # Conflict with redis_cache_store in Rails < 8.1.2 (connection_pool 3.x, Rails #56291)
 gem "connection_pool", "~> 2.5"
 
+# The modern asset pipeline for Rails [https://github.com/rails/propshaft]
+gem "propshaft"
 # Use sqlite3 as the database for Active Record
 gem "sqlite3", ">= 2.1"
 
@@ -74,14 +76,9 @@ gem "bundle-audit"
 gem "datadog"
 gem "dogstatsd-ruby", "~> 5.3"
 gem "dotenv-rails"
-# https://github.com/sass-contrib/sass-embedded-host-ruby/issues/210
-gem "google-protobuf", force_ruby_platform: true if RUBY_PLATFORM.include?("linux-musl")
 gem "lograge"
 gem "ougai", "~> 1.7"
 gem "rake"
 gem "redis-actionpack"
-gem "sassc-embedded"
 gem "sidekiq", "~> 7.3"
-# Legacy asset pipeline — propshaft migration is stacked on this PR
-gem "sprockets-rails"
 gem "standard"
