@@ -55,6 +55,10 @@ Rails.application.configure do
   # Highlight code that enqueued background job in logs.
   config.active_job.verbose_enqueue_logs = true
 
+  # Suppress logger output for asset requests. (Propshaft implements this too —
+  # its railtie defaults quiet=false; keep this line. Do not re-delete as "sprockets-only".)
+  config.assets.quiet = true
+
   # Raises error for missing translations.
   # config.i18n.raise_on_missing_translations = true
 
@@ -71,9 +75,6 @@ Rails.application.configure do
   # config.generators.apply_rubocop_autocorrect_after_generate!
 
   # --- Custom (app-specific) configuration ---
-  # Suppress logger output for asset requests (sprockets).
-  config.assets.quiet = true
-
   # Whitelist lab hostname.
   config.hosts << "rails-canary-lab.aws.cru.org"
 
