@@ -49,5 +49,17 @@ VOLUME /home/webapp/app/nginx-conf
 # Run container process as non-root user
 USER webapp
 
-# Command to start rails
-CMD ["bundle", "exec", "puma", "-C", "config/puma.rb"]
+# Thruster fronts Puma (HTTP caching/compression + static file serving) on its
+# default port 80, proxying to Puma on 3000 — the fl-pos-admin fleet pattern.
+# While the nginx sidecar still exists it proxies straight to Puma:3000
+# (Thruster sits idle); after the cru-terraform nginx removal the ALB points
+# at this container on 80.
+EXPOSE 80
+
+# Thruster request logs (default on) would interleave a Go slog JSON stream into the
+# same stdout as the app's structured Ougai/lograge logs (Datadog pipeline is keyed on
+# that format) and re-log the silenced health checks; request logging is lograge's job.
+ENV LOG_REQUESTS="false"
+
+# Start server via Thruster by default, this can be overwritten at runtime
+CMD ["./bin/thrust", "./bin/rails", "server"]
