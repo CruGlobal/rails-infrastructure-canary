@@ -49,6 +49,12 @@ gem "thruster", require: false
 # Use Active Storage variants [https://guides.rubyonrails.org/active_storage_overview.html#transforming-images]
 # gem "image_processing", "~> 1.2"
 
+# Boot-guard fixture, pinned below the floor on purpose (ADL-23). Rails 8.0.5.1
+# and later refuse to boot when ruby-vips < 2.2.1 is bundled (CVE-2026-66066),
+# so this pin gives the Renovate preset's ruby-vips carve-out something to find
+# and makes the canary representative of the fleet apps that carry the gem.
+gem "ruby-vips", "= 2.1.4"
+
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem "debug", platforms: %i[mri windows], require: "debug/prelude"
