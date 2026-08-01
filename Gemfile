@@ -53,7 +53,7 @@ gem "thruster", require: false
 # and later refuse to boot when ruby-vips < 2.2.1 is bundled (CVE-2026-66066),
 # so this pin gives the Renovate preset's ruby-vips carve-out something to find
 # and makes the canary representative of the fleet apps that carry the gem.
-gem "ruby-vips", "= 2.1.4"
+gem "ruby-vips", "= 2.3.0"
 
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
