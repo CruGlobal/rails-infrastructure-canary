@@ -17,6 +17,14 @@ jobs:
       - name: Check out files
         uses: actions/checkout@v6
 
+      # ubuntu-latest ships no libvips, but the fleet's Docker images carry
+      # 8.15-8.17. Rails 8.0.5.1+ checks BOTH libvips >= 8.13 and ruby-vips
+      # >= 2.2.1 at boot (CVE-2026-66066), so without this the guard would trip
+      # on the missing system library and mask the gem version it is really
+      # testing — see the ruby-vips fixture pin in the Gemfile (ADL-23).
+      - name: Install libvips
+        run: sudo apt-get update && sudo apt-get install -y libvips
+
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
