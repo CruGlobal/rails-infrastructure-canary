@@ -1,7 +1,43 @@
 version: 2
+registries:
+  contribsys:
+    type: rubygems-server
+    url: 'https://gems.contribsys.com/'
+    # Org-level Dependabot secret (cru-terraform github/CruGlobal/secrets/
+    # rails_variables.tf), auto-scoped to all CruGlobal Ruby repos; the
+    # SSM-backed value is the user:password pair Basic auth needs.
+    token: ${{secrets.BUNDLE_GEMS__CONTRIBSYS__COM}}
 updates:
 - package-ecosystem: github-actions
   directory: "/"
   schedule:
     interval: daily
   open-pull-requests-limit: 10
+  commit-message:
+    prefix: "ci(deps)"
+# Gems are security-only: open-pull-requests-limit: 0 suppresses routine
+# version-bump PRs while security PRs (exempt from the limit) still open.
+# Patch-level security fixes Dependabot can apply group into a single PR
+# eligible for the strict auto-merge tier; minor/major security fixes
+# fall outside the group and arrive individually for human review.
+# Fixes Dependabot cannot apply (parent constraint would be exceeded)
+# surface as "cannot update" alerts, not PRs — the nightly digest reads
+# those. Do not set target-branch here: security updates only follow
+# this entry's settings when none is set.
+- package-ecosystem: bundler
+  directory: "/"
+  insecure-external-code-execution: allow
+  registries:
+  - contribsys
+  schedule:
+    interval: daily
+  open-pull-requests-limit: 0
+  commit-message:
+    prefix: "fix(deps)"
+  groups:
+    security-patches:
+      applies-to: security-updates
+      update-types:
+      - "patch"
+      patterns:
+      - "*"
