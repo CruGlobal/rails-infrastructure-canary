@@ -7,3 +7,8 @@ db/schema.rb linguist-generated
 vendor/* linguist-vendored
 config/credentials/*.yml.enc diff=rails_credentials
 config/credentials.yml.enc diff=rails_credentials
+
+# Keep the stock error pages in public/ out of language stats — they outweigh
+# the app's Ruby and flip the repo's primary language to HTML, which drops it
+# from the org:CruGlobal language:ruby queries scoping org secrets/variables.
+public/** linguist-vendored
