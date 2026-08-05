@@ -1,0 +1,16 @@
+name: Dependabot auto-merge
+
+on:
+  pull_request:
+    types: [opened, reopened, synchronize]
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  auto-merge:
+    uses: CruGlobal/.github/.github/workflows/dependabot-auto-merge-security-patch.yml@ccee50b25e28d00c3949c69cca236e0ab3ad69aa # .github#437 merge; re-pin to the next .github release tag once cut
+    secrets:
+      AUTOMERGE_APP_ID: ${{ secrets.AUTOMERGE_APP_ID }}
+      AUTOMERGE_APP_PRIVATE_KEY: ${{ secrets.AUTOMERGE_APP_PRIVATE_KEY }}
