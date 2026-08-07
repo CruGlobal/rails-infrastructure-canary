@@ -15,7 +15,7 @@ jobs:
 
     steps:
       - name: Check out files
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
 
       # ubuntu-latest ships no libvips, but the fleet's Docker images carry
       # 8.15-8.17. Rails 8.0.5.1+ checks BOTH libvips >= 8.13 and ruby-vips
@@ -39,7 +39,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check out files
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
 
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
@@ -65,7 +65,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check out files
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
 
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
