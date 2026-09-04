@@ -50,8 +50,9 @@ jobs:
 
       # -w2: block only on medium+ confidence findings — weak nudges (e.g. the
       # Rails-EOL warning) shouldn't wedge merges devs can't individually fix.
-      # --ensure-latest dropped: Renovate keeps brakeman current (preset carve-out),
-      # so the flag would only re-add a race where an out-of-date brakeman blocks CI.
+      # --ensure-latest dropped: brakeman is bumped by hand (Dependabot covers
+      # security advisories only), so the flag would only re-add a race where an
+      # out-of-date brakeman blocks CI.
       - name: Brakeman
         run: bundle exec brakeman -A -q --no-pager -w2
 
