@@ -59,9 +59,9 @@ jobs:
       - name: StandardRB
         run: bundle exec standardrb --format simple
 
-  # Known-vulnerability status. NOT a required check (kept out of the branch
-  # ruleset), so a security backlog — or a vuln Renovate is mid-fixing — never
-  # deadlocks merges. Renovate owns remediation; this is the visible backstop.
+  # Known-vulnerability status. NOT a required check, so a backlog never deadlocks
+  # merges. Dependabot security-only opens the fixes it can; this is the visible
+  # backstop, and groundcru's nightly rubysec sweep reports what Dependabot misses.
   audit:
     runs-on: ubuntu-latest
     steps:

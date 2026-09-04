@@ -2,6 +2,7 @@
 require "rubygems"
 require "bundler/setup"
 
-ARGV.unshift("--ensure-latest")
+# Same flags as the Brakeman step in .github/workflows/ruby.yml.
+ARGV.unshift("-A", "-q", "-w2")
 
 load Gem.bin_path("brakeman", "brakeman")
