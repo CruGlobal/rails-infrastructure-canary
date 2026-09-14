@@ -2,8 +2,6 @@
 require "rubygems"
 require "bundler/setup"
 
-# Same result-affecting flags as the Brakeman step in .github/workflows/ruby.yml
-# (-A -q -w2; CI adds --no-pager).
-ARGV.unshift("-A", "-q", "-w2")
+ARGV.unshift("--ensure-latest")
 
 load Gem.bin_path("brakeman", "brakeman")
