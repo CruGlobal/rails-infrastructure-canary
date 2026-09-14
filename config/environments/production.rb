@@ -31,7 +31,7 @@ Rails.application.configure do
   config.force_ssl = true
 
   # Skip http-to-https redirect for the default health check endpoint.
-  config.ssl_options = {redirect: {exclude: ->(request) { request.path == "/monitors/lb" }}}
+  config.ssl_options = {redirect: {exclude: ->(request) { request.path == BaseImageRubyTest::HEALTHCHECK_PATH }}}
 
   # NOTE: The application logger is configured in config/application.rb via Log::Logger
   # (logs to $stdout for Docker -> Datadog). Environment files load AFTER application.rb,
@@ -44,7 +44,7 @@ Rails.application.configure do
   config.log_level = ENV.fetch("RAILS_LOG_LEVEL", "info")
 
   # Prevent health checks from clogging up the logs.
-  config.silence_healthcheck_path = "/monitors/lb"
+  config.silence_healthcheck_path = BaseImageRubyTest::HEALTHCHECK_PATH
 
   # Don't log any deprecations.
   config.active_support.report_deprecations = false
