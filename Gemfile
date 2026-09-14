@@ -7,8 +7,6 @@ ruby file: ".ruby-version"
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem "rails", "~> 8.1.3", ">= 8.1.3.1"
-# Conflict with redis_cache_store in Rails < 8.1.2 (connection_pool 3.x, Rails #56291)
-gem "connection_pool", "~> 2.5"
 
 # The modern asset pipeline for Rails [https://github.com/rails/propshaft]
 gem "propshaft"
