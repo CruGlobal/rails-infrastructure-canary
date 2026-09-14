@@ -38,6 +38,7 @@ module BaseImageRubyTest
     # config.eager_load_paths << Rails.root.join("extras")
 
     config.active_job.queue_adapter = :sidekiq
+    config.active_storage.variant_processor = :disabled
 
     redis_conf = YAML.safe_load(ERB.new(File.read(Rails.root.join("config", "redis.yml"))).result, permitted_classes: [Symbol], aliases: true)["cache"]
     redis_conf[:url] = "redis://" + redis_conf[:host] + "/" + redis_conf[:db].to_s
