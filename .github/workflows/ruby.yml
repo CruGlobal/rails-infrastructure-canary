@@ -6,6 +6,11 @@ on:
   push:
     branches: [master,staging]
 
+# Cancel in-progress runs when a new commit is pushed to the same branch/PR.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.ref }}
+  cancel-in-progress: true
+
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -15,7 +20,7 @@ jobs:
 
     steps:
       - name: Check out files
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
 
       # ubuntu-latest ships no libvips, but the fleet's Docker images carry
       # 8.15-8.17. Rails 8.0.5.1+ checks BOTH libvips >= 8.13 and ruby-vips
@@ -39,7 +44,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check out files
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
 
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
@@ -50,22 +55,31 @@ jobs:
 
       # -w2: block only on medium+ confidence findings — weak nudges (e.g. the
       # Rails-EOL warning) shouldn't wedge merges devs can't individually fix.
-      # --ensure-latest dropped: Renovate keeps brakeman current (preset carve-out),
-      # so the flag would only re-add a race where an out-of-date brakeman blocks CI.
+      # --ensure-latest dropped: brakeman is bumped by hand (Dependabot covers
+      # security advisories only), so the flag would only re-add a race where an
+      # out-of-date brakeman blocks CI.
       - name: Brakeman
         run: bundle exec brakeman -A -q --no-pager -w2
 
       - name: StandardRB
         run: bundle exec standardrb --format simple
 
-  # Known-vulnerability status. NOT a required check (kept out of the branch
-  # ruleset), so a security backlog — or a vuln Renovate is mid-fixing — never
-  # deadlocks merges. Renovate owns remediation; this is the visible backstop.
+  # Known-vulnerability status. NOT a required check, so a backlog never deadlocks
+  # merges. Dependabot security-only opens the fixes it can; this is the visible
+  # backstop, and groundcru's nightly rubysec sweep reports what Dependabot misses.
   audit:
     runs-on: ubuntu-latest
     steps:
       - name: Check out files
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
+
+      # ubuntu-latest ships no libvips, but the fleet's Docker images carry
+      # 8.15-8.17. Rails 8.0.5.1+ checks BOTH libvips >= 8.13 and ruby-vips
+      # >= 2.2.1 at boot (CVE-2026-66066), so without this the guard would trip
+      # on the missing system library and mask the gem version it is really
+      # testing — see the ruby-vips fixture pin in the Gemfile (ADL-23).
+      - name: Install libvips
+        run: sudo apt-get update && sudo apt-get install -y libvips
 
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
@@ -75,7 +89,7 @@ jobs:
           BUNDLE_GEMS__CONTRIBSYS__COM: ${{ secrets.BUNDLE_GEMS__CONTRIBSYS__COM }}
 
       - name: Bundle audit
-        run: bundle exec bundle audit check --update --ignore CVE-2015-9284
+        run: bin/bundler-audit check --update
 
       - name: JavaScript audit
         run: bin/importmap audit
