@@ -15,7 +15,7 @@ WORKDIR /home/webapp/app
 RUN apk upgrade --no-cache
 
 # Install rails/app dependencies
-RUN apk --no-cache add sqlite-libs tzdata jemalloc
+RUN apk --no-cache add sqlite-libs tzdata vips jemalloc
 
 ENV LD_PRELOAD="/usr/lib/libjemalloc.so.2"
 
