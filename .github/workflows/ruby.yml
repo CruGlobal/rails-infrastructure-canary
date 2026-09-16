@@ -6,6 +6,11 @@ on:
   push:
     branches: [master,staging]
 
+# Cancel in-progress runs when a new commit is pushed to the same branch/PR.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.ref }}
+  cancel-in-progress: true
+
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -68,6 +73,14 @@ jobs:
       - name: Check out files
         uses: actions/checkout@v7
 
+      # ubuntu-latest ships no libvips, but the fleet's Docker images carry
+      # 8.15-8.17. Rails 8.0.5.1+ checks BOTH libvips >= 8.13 and ruby-vips
+      # >= 2.2.1 at boot (CVE-2026-66066), so without this the guard would trip
+      # on the missing system library and mask the gem version it is really
+      # testing — see the ruby-vips fixture pin in the Gemfile (ADL-23).
+      - name: Install libvips
+        run: sudo apt-get update && sudo apt-get install -y libvips
+
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
@@ -76,7 +89,7 @@ jobs:
           BUNDLE_GEMS__CONTRIBSYS__COM: ${{ secrets.BUNDLE_GEMS__CONTRIBSYS__COM }}
 
       - name: Bundle audit
-        run: bundle exec bundle audit check --update --ignore CVE-2015-9284
+        run: bin/bundler-audit check --update ${{ vars.CVE_IGNORES && format('--ignore {0}', vars.CVE_IGNORES) }}
 
       - name: JavaScript audit
         run: bin/importmap audit

@@ -28,8 +28,8 @@
 !/tmp/storage/
 !/tmp/storage/.keep
 
-# Ignore master key for decrypting credentials and more.
-/config/master.key
+# Ignore key files for decrypting credentials and more.
+/config/*.key
 
 # --- App-specific ---
 # Compiled assets from `assets:precompile`.
