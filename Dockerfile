@@ -15,7 +15,7 @@ WORKDIR /home/webapp/app
 RUN apk upgrade --no-cache
 
 # Install rails/app dependencies
-RUN apk --no-cache add sqlite-libs tzdata jemalloc
+RUN apk --no-cache add sqlite-libs tzdata vips jemalloc
 
 ENV LD_PRELOAD="/usr/lib/libjemalloc.so.2"
 
@@ -32,8 +32,14 @@ RUN apk --no-cache add --virtual build-deps build-base sqlite-dev yaml-dev \
     && bundle install --jobs 20 --retry 2 \
     && apk del build-deps
 
+# Precompile bootsnap code for faster boot times
+RUN bundle exec bootsnap precompile --gemfile
+
 # Copy the application
 COPY . .
+
+# Precompile bootsnap code for faster boot times
+RUN bundle exec bootsnap precompile app/ lib/
 
 # Environment required to build the application
 ARG RAILS_ENV=production
