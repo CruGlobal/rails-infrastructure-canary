@@ -8,9 +8,21 @@ require_relative "../lib/log/logger"
 Bundler.require(*Rails.groups)
 
 module BaseImageRubyTest
+  # Load-balancer health-check endpoint (routed in config/routes.rb as `rails_health_check`).
+  # Single source of truth: these configs reference the constants and stay in sync automatically:
+  #   - config/environments/production.rb      (ssl_options redirect exclude)
+  #   - config/environments/production.rb      (silence_healthcheck_path)
+  #   - config/initializers/lograge.rb         (ignore_actions, which needs the controller#action form)
+  #   - config/initializers/datadog.rb         (span filter that drops health-check traces)
+  # Intentionally still hardcoded — a rename must update these by hand:
+  #   - config/routes.rb: `get "monitors/lb"` (route definition, no leading slash)
+  #   - cru-terraform: the ALB target-group health-check path
+  HEALTHCHECK_PATH = "/monitors/lb"
+  HEALTHCHECK_ACTION = "MonitorsController#lb"
+
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
-    config.load_defaults 8.0
+    config.load_defaults 8.1
 
     # Please, add to the `ignore` list any other `lib` subdirectories that do
     # not contain `.rb` files, or that should not be reloaded or eager loaded.
@@ -26,6 +38,7 @@ module BaseImageRubyTest
     # config.eager_load_paths << Rails.root.join("extras")
 
     config.active_job.queue_adapter = :sidekiq
+    config.active_storage.variant_processor = :disabled
 
     redis_conf = YAML.safe_load(ERB.new(File.read(Rails.root.join("config", "redis.yml"))).result, permitted_classes: [Symbol], aliases: true)["cache"]
     redis_conf[:url] = "redis://" + redis_conf[:host] + "/" + redis_conf[:db].to_s

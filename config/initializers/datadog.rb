@@ -40,6 +40,6 @@ if ENV["AWS_EXECUTION_ENV"] === "AWS_ECS_EC2"
 
   # skipping the health check: if it returns true, the trace is dropped
   Datadog::Tracing.before_flush(Datadog::Tracing::Pipeline::SpanFilter.new { |span|
-    span.name == "rack.request" && span.get_tag("http.url") == "/monitors/lb"
+    span.name == "rack.request" && span.get_tag("http.url") == BaseImageRubyTest::HEALTHCHECK_PATH
   })
 end

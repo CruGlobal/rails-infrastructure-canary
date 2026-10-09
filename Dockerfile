@@ -15,7 +15,7 @@ WORKDIR /home/webapp/app
 RUN apk upgrade --no-cache
 
 # Install rails/app dependencies
-RUN apk --no-cache add sqlite-libs tzdata jemalloc
+RUN apk --no-cache add sqlite-libs tzdata vips jemalloc
 
 ENV LD_PRELOAD="/usr/lib/libjemalloc.so.2"
 
@@ -39,7 +39,10 @@ COPY . .
 ARG RAILS_ENV=production
 
 # Compile assets and fix permissions
-RUN RAILS_ENV=production bundle exec rake assets:precompile \
+# Precompile bootsnap code in the same RUN as the chown; in an earlier layer
+# the chown would store a second copy of the cache.
+RUN bundle exec bootsnap precompile --gemfile app/ lib/ \
+    && RAILS_ENV=production bundle exec rake assets:precompile \
     && chown -R webapp:webapp /home/webapp/
 
 # Define volumes used by ECS to share public html and extra nginx config with nginx container

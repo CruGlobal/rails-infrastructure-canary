@@ -7,7 +7,7 @@ Rails.application.configure do
     end
   end
   config.lograge.base_controller_class = ["ActionController::API", "ActionController::Base"]
-  config.lograge.ignore_actions = ["MonitorsController#lb"]
+  config.lograge.ignore_actions = [BaseImageRubyTest::HEALTHCHECK_ACTION]
   config.lograge.custom_options = lambda do |event|
     exceptions = %w[controller action format id]
     {
