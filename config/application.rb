@@ -42,6 +42,7 @@ module BaseImageRubyTest
 
     redis_conf = YAML.safe_load(ERB.new(File.read(Rails.root.join("config", "redis.yml"))).result, permitted_classes: [Symbol], aliases: true)["cache"]
     redis_conf[:url] = "redis://" + redis_conf[:host] + "/" + redis_conf[:db].to_s
+    redis_conf[:max_key_size] = 1024
     config.cache_store = :redis_cache_store, redis_conf
 
     # Send all logs to stdout, which docker reads and sends to datadog.
