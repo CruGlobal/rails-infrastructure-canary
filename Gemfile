@@ -6,9 +6,7 @@ end
 ruby file: ".ruby-version"
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem "rails", "~> 8.0.5"
-# Conflict with redis_cache_store in Rails < 8.1.2 (connection_pool 3.x, Rails #56291)
-gem "connection_pool", "~> 2.5"
+gem "rails", "~> 8.1.4"
 
 # The modern asset pipeline for Rails [https://github.com/rails/propshaft]
 gem "propshaft"
@@ -58,6 +56,9 @@ group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem "debug", platforms: %i[mri windows], require: "debug/prelude"
 
+  # Audits gems for known security defects (use config/bundler-audit.yml to ignore issues)
+  gem "bundler-audit", require: false
+
   # Static analysis for security vulnerabilities [https://brakemanscanner.org/]
   gem "brakeman", require: false
 
@@ -77,7 +78,6 @@ group :test do
 end
 
 gem "amazing_print"
-gem "bundle-audit"
 gem "datadog"
 gem "dogstatsd-ruby", "~> 5.3"
 gem "dotenv-rails"
