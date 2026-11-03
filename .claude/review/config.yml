@@ -1,0 +1,461 @@
+# agent-review configuration (v2)
+#
+# Lives at `.claude/review/config.yml` in the repo being reviewed.
+# Validate any edit with: `agent-review config validate`
+#
+# This skeleton is intentionally generic. `/agent-review:init` fills in the
+# repo-specific globs, triggers, and packages; you can also edit it by hand.
+
+version: 2
+
+# Global severity/verbosity dial.
+# chill     → fewer, high-confidence findings; raises the consensus threshold
+# standard  → default behavior
+# assertive → more findings, lower threshold, may be nitpicky
+profile: standard
+
+# Branch every review diffs against unless `--base` is passed.
+base_branch: master
+
+# ── Risk scoring ──────────────────────────────────────────────────────────────
+risk:
+  # File-pattern contributions. `tier` is descriptive; `points` drives the score.
+  # Per file, the highest-scoring matching pattern wins (patterns don't stack on
+  # one file; files sum across the diff). A 0-point entry never changes the score
+  # (max starts at 0) — it documents that a path was considered and deemed
+  # no-risk; use `excluded_paths` to actually exclude.
+  patterns:
+    - { glob: '.github/workflows/**', points: 3, tier: critical }
+    # Dependabot/Renovate/stage-merge config: the fleet's security-update automation.
+    - { glob: '.github/*.{yml,json}', points: 3, tier: critical }
+    # Build, boot, and deploy path. Copied fleet-wide from this reference app.
+    - { glob: 'Dockerfile', points: 3, tier: critical }
+    - { glob: 'build.sh', points: 3, tier: critical }
+    - { glob: 'bin/docker-entrypoint', points: 3, tier: critical }
+    - { glob: 'bin/thrust', points: 3, tier: critical }
+    # Runtime and framework versions; Rails security bumps carry boot guards.
+    - { glob: 'Gemfile', points: 3, tier: critical }
+    - { glob: '.ruby-version', points: 3, tier: critical }
+    - { glob: 'Gemfile.lock', points: 2, tier: high }
+    # Security scanners and their ignore lists. Weakening them weakens every PR.
+    - { glob: 'bin/brakeman', points: 3, tier: critical }
+    - { glob: 'bin/bundler-audit', points: 3, tier: critical }
+    - { glob: 'bin/ci', points: 3, tier: critical }
+    - { glob: 'config/ci.rb', points: 3, tier: critical }
+    - { glob: 'config/bundler-audit.yml', points: 3, tier: critical }
+    # Framework config, SSL/host rules, sessions, CSP, parameter filtering, routes.
+    - { glob: 'config/application.rb', points: 3, tier: critical }
+    - { glob: 'config/environments/**', points: 3, tier: critical }
+    - { glob: 'config/initializers/session_store.rb', points: 3, tier: critical }
+    - { glob: 'config/initializers/filter_parameter_logging.rb', points: 3, tier: critical }
+    - { glob: 'config/initializers/content_security_policy.rb', points: 3, tier: critical }
+    - { glob: 'config/routes.rb', points: 3, tier: critical }
+    # Committed placeholder env (COPY'd into the image; see .dockerignore).
+    - { glob: '.env', points: 3, tier: critical }
+    # Schema and seeds (no migrations exist today).
+    - { glob: 'db/**', points: 3, tier: critical }
+    # The review harness itself.
+    - { glob: '.claude/review/**', points: 3, tier: critical }
+    - { glob: '.claude/settings.json', points: 2, tier: high }
+    - { glob: 'CLAUDE.md', points: 2, tier: high }
+    # Other initializers (Datadog, lograge, Sidekiq Pro) and data-store config.
+    - { glob: 'config/initializers/**', points: 2, tier: high }
+    - { glob: 'config/**', points: 2, tier: high }
+    - { glob: 'config.ru', points: 2, tier: high }
+    # Fleet-copied structured logging (Datadog pipeline keys on its JSON shape).
+    - { glob: 'lib/log/**', points: 2, tier: high }
+    # HTTP surface: controllers, Action Cable connection, views.
+    - { glob: 'app/controllers/**', points: 2, tier: high }
+    - { glob: 'app/channels/**', points: 2, tier: high }
+    - { glob: 'app/views/**', points: 2, tier: high }
+    # What ships in the image, and linguist classification (org secret scoping).
+    - { glob: '.dockerignore', points: 2, tier: high }
+    - { glob: '.gitattributes', points: 2, tier: high }
+    # Ordinary source.
+    - { glob: 'app/**', points: 1, tier: medium }
+    - { glob: 'lib/**', points: 1, tier: medium }
+    - { glob: 'bin/**', points: 1, tier: medium }
+    # Explicit 0-point entries: documentation of intent, not scoring behavior.
+    - { glob: 'test/**', points: 0, tier: low }
+
+  # Unknown paths are not zero-risk. Each non-excluded file that matches none of
+  # the patterns above gets this many points, preventing a newly introduced
+  # directory from being silently skipped by auto mode. Set to 0 only if your
+  # pattern map is intentionally exhaustive.
+  unmatched_file_points: 1
+
+  # Dependency manifests and lockfiles, used by the special detections below.
+  manifests: ['Gemfile']
+  lockfiles: ['Gemfile.lock']
+
+  # Change-volume → points (lines changed across the diff).
+  volume_multiplier:
+    - { upTo: 50, points: 0 }
+    - { upTo: 200, points: 1 }
+    - { upTo: 500, points: 2 }
+    - { upTo: 1000, points: 3 }
+    - { upTo: null, points: 4 } # 1000+
+
+  # Scope multiplier applied to the pattern+volume subtotal.
+  scope_multiplier:
+    single_file: 1.0
+    single_feature: 1.0
+    multi_feature: 1.3
+    cross_cutting: 1.7
+    core_infra: 2.0
+
+  # Special detections. Entries with empty `paths`/`files`/`packages` never fire —
+  # fill them in to enable the detection.
+  special:
+    # - { when: new_dependency, points: 2 }        # disabled: Gemfile is not a JSON manifest
+    # - { when: critical_pkg_update, points: 3, packages: [] }   # same
+    - { when: lockfile_only_change, points: 1 }
+    # Globs matching schema/DB migration files, e.g. 'db/migrations/**'.
+    # Empty: this repo has no migrations (db/schema.rb is empty, no db/migrate/).
+    - { when: migration_change, points: 3, paths: [] }
+    # `files` = security-relevant config files (framework config, CSP/header
+    # config); `keywords` = diff text that signals a security-relevant edit.
+    - {
+        when: config_security_change,
+        points: 2,
+        files:
+          [
+            'config/application.rb',
+            'config/environments/*.rb',
+            'config/initializers/content_security_policy.rb',
+            'config/initializers/session_store.rb',
+            'config/initializers/filter_parameter_logging.rb',
+            'config/routes.rb',
+          ],
+        keywords:
+          [
+            headers,
+            content_security_policy,
+            csp,
+            cors,
+            redirect,
+            force_ssl,
+            assume_ssl,
+            ssl_options,
+            hosts,
+            host_authorization,
+            session_store,
+            same_site,
+            filter_parameters,
+            forgery_protection,
+            web_console,
+            'Sidekiq::Web',
+          ],
+      }
+
+  # Score → risk level + required reviewer.
+  levels:
+    - { range: [0, 3], level: LOW, reviewer: entry }
+    - { range: [4, 6], level: MEDIUM, reviewer: entry }
+    - { range: [7, 9], level: HIGH, reviewer: experienced }
+    - { range: [10, null], level: CRITICAL, reviewer: 'senior maintainer' }
+
+# ── Agents ────────────────────────────────────────────────────────────────────
+# `always: true` runs the agent on every review. Otherwise the agent runs only
+# when a changed file matches `triggers.paths` or the diff contains one of
+# `triggers.content`. `rules[]` paths resolve against `.claude/review/`.
+# `triggers.specials` (optional) does NOT trigger the agent — it only records
+# which risk.special[].when detections this lane owns, so loadConfig's
+# `escalates` default can still find the right lane if you rename/remove the
+# security/data-integrity/architecture ids below.
+# `model` picks the review tier: an explicit `model:` (opus/sonnet/haiku) is
+# honored in every review mode; `smart` lanes are the ones quick mode may
+# downgrade to haiku, and only when `escalates` is false.
+# WARNING: the engine honors this operator override — explicitly setting `escalates: false` on
+# the security lane below removes it from the escalating-lane coverage guarantee (an unmatched
+# reviewable file no longer force-includes a lane that actually escalates to opus). The engine
+# still force-includes `security` by id when NO lane escalates at all, so coverage never silently
+# vanishes — but if every lane's `escalates` is set to false, that forced lane won't actually
+# escalate either. De-escalating every lane disables coverage escalation entirely: an unmatched
+# reviewable file will still get a lane, but never one that reads at opus rigor.
+agents:
+  - id: security
+    title: Security Review Agent
+    expertise: Authentication, authorization, data protection, vulnerability detection, secure coding.
+    enabled: true
+    model: smart # smart | opus | sonnet | haiku
+    always: false
+    escalates: true # deserves Opus on HIGH/CRITICAL PRs
+    # Runs on every review under the code-review engine (engine.code_review.always);
+    # these triggers apply if the engine is switched back to agent-review.
+    triggers:
+      paths:
+        - '.github/**'
+        - '.env'
+        - '.dockerignore'
+        - 'Dockerfile'
+        - 'build.sh'
+        - 'bin/**'
+        - 'Gemfile'
+        - 'Gemfile.lock'
+        - 'config/application.rb'
+        - 'config/environments/**'
+        - 'config/initializers/**'
+        - 'config/routes.rb'
+        - 'config/bundler-audit.yml'
+        - 'config/ci.rb'
+        - 'config/importmap.rb'
+        - 'config/*.yml'
+        - 'app/controllers/**'
+        - 'app/channels/**'
+        - 'app/views/**'
+        - '.claude/**'
+        - 'CLAUDE.md'
+      content:
+        - 'ENV['
+        - 'ENV.fetch'
+        - 'secrets.'
+        - 'html_safe'
+        - 'raw('
+        - '<%=='
+        - 'redirect_to'
+        - 'protect_from_forgery'
+        - 'skip_forgery_protection'
+        - 'permit('
+        - 'force_ssl'
+        - 'content_security_policy'
+        - 'filter_parameters'
+        - 'Sidekiq::Web'
+        - 'pull_request_target'
+        - 'permissions:'
+        - 'GITHUB_TOKEN'
+        - 'CVE_IGNORES'
+        - '--ignore'
+        - 'SIDEKIQ_CREDS'
+        - 'BUNDLE_GEMS__CONTRIBSYS__COM'
+        - 'SECRET_KEY_BASE'
+        - 'system('
+        - 'constantize'
+      specials: [config_security_change]
+    rules: ['rules/security.md']
+
+  - id: architecture
+    title: Architecture Review Agent
+    expertise: System design, patterns, technical debt, maintainability, scalability.
+    enabled: true
+    always: true
+    escalates: true # deserves Opus on HIGH/CRITICAL PRs
+    rules: ['rules/architecture.md']
+
+  - id: data-integrity
+    title: Data Integrity Review Agent
+    expertise: Data flow, persistence, caching, input validation, type safety, data consistency.
+    enabled: true
+    always: false
+    escalates: true # deserves Opus on HIGH/CRITICAL PRs
+    # Redis cache/session/Sidekiq config, job retry semantics, SQLite prepare at boot.
+    triggers:
+      paths:
+        - 'app/jobs/**'
+        - 'app/models/**'
+        - 'db/**'
+        - 'config/database.yml'
+        - 'config/redis.yml'
+        - 'config/cable.yml'
+        - 'config/storage.yml'
+        - 'config/initializers/sidekiq.rb'
+        - 'config/initializers/session_store.rb'
+        - 'bin/docker-entrypoint'
+      content:
+        - 'perform_later'
+        - 'perform_async'
+        - 'sidekiq_options'
+        - 'retry_on'
+        - 'discard_on'
+        - 'Rails.cache'
+        - 'cache_store'
+        - 'redis_cache_store'
+        - 'max_key_size'
+        - 'Redis.new'
+        - 'super_fetch!'
+        - 'reliable_scheduler!'
+        - 'reliable_push!'
+        - 'expire_after'
+        - 'ActiveRecord::Migration'
+        - 'db:prepare'
+      specials: [migration_change]
+    rules: ['rules/data-integrity.md']
+
+  - id: testing
+    title: Testing & Quality Review Agent
+    expertise: Test coverage, test quality, edge cases, error handling, code quality.
+    enabled: true
+    always: true
+    rules: ['rules/testing.md']
+
+  - id: standards
+    title: Standards Compliance Review Agent
+    expertise: Project-specific coding standards, patterns, and conventions.
+    enabled: true
+    always: true
+    rules: ['rules/standards.md']
+
+  # Novel specialist (not from the standard table): this repo is the fleet's
+  # infrastructure lab, so most PRs are upgrades, pins, CI, and container changes.
+  - id: runtime-infra
+    title: Runtime & Dependency Infrastructure Review Agent
+    expertise: Container image, boot and deploy path, Ruby/Rails/gem version pins and their boot guards, CI and dependency-update automation, and the observability initializers the fleet copies from this reference app.
+    enabled: true
+    model: smart
+    always: false
+    escalates: true # a boot or deploy miss here is copied to every fleet app
+    triggers:
+      paths:
+        - 'Dockerfile'
+        - 'build.sh'
+        - '.dockerignore'
+        - 'bin/**'
+        - 'Gemfile'
+        - 'Gemfile.lock'
+        - '.ruby-version'
+        - '.github/**'
+        - '.gitattributes'
+        - 'config.ru'
+        - 'Rakefile'
+        - 'config/application.rb'
+        - 'config/boot.rb'
+        - 'config/environment.rb'
+        - 'config/environments/**'
+        - 'config/initializers/**'
+        - 'config/puma.rb'
+        - 'config/ci.rb'
+        - 'config/bundler-audit.yml'
+        - 'config/importmap.rb'
+        - 'config/*.yml'
+        - 'lib/log/**'
+      content:
+        - 'load_defaults'
+        - 'new_framework_defaults'
+        - 'Datadog.configure'
+        - 'lograge'
+        - 'Ougai'
+        - 'HEALTHCHECK_PATH'
+        - 'HEALTHCHECK_ACTION'
+        - 'LD_PRELOAD'
+        - 'libvips'
+        - 'ruby-vips'
+        - 'EXPOSE'
+        - 'thrust'
+      specials: [lockfile_only_change]
+    rules: ['rules/runtime-infra.md']
+
+  # Advisory lane: rules/simplification.md caps pure cleanups below the blocker
+  # threshold and requires cited proof for every reuse claim. Keep this entry
+  # LAST — quick mode's third slot takes the first plan entry after
+  # testing/standards, and it must never land on this lane. Costs one extra
+  # smart-tier lane per standard/deep review; set `enabled: false` to opt out.
+  - id: simplification
+    title: Simplification & Reuse Review Agent
+    expertise: Code reuse, duplication, unnecessary abstraction, dead weight, wasteful computation on real data paths.
+    enabled: true
+    always: true
+    rules: ['rules/simplification.md']
+
+# ── Per-path rules ────────────────────────────────────────────────────────────
+# Extra rule docs applied to EVERY agent reviewing a matching file.
+# Example: - { paths: ['<ui-components>/**'], rules: ['rules/ux.md'] }
+path_rules: []
+
+# ── Exclusions — never reviewed, never scored ─────────────────────────────────
+excluded_paths:
+  - '**/*.snap'
+  - '**/*.generated.*'
+  - 'docs/**'
+  - '.claude/review/rules/**' # prose rule docs — config/guidance, not reviewable code
+  # Package-manager artifacts — generated/vendored, never reviewable
+  - 'yarn.lock'
+  - 'package-lock.json'
+  - 'pnpm-lock.yaml'
+  # Stock Rails error pages and icons (linguist-vendored in .gitattributes)
+  - 'public/*.html'
+  - 'public/*.png'
+  - 'public/*.svg'
+  # Vendored and runtime directories (only .keep files are tracked)
+  - 'vendor/**'
+  - 'log/**'
+  - 'tmp/**'
+  - 'storage/**'
+
+# ── Deterministic evidence ────────────────────────────────────────────────────
+# ast-grep runs trusted, repo-authored AST rules before the model. Only matches
+# on added lines become ledger findings. Enable after creating the referenced
+# sgconfig + rule directory (see templates/static/README.md).
+static_analysis:
+  ast_grep:
+    enabled: false
+    config: static/sgconfig.yml
+    version: 0.45.0 # pin the CI binary; do not use "latest"
+    severity: { error: 8, warning: 6, info: 4, hint: 2 }
+    excluded_paths: []
+
+# Snapshot existing GitHub checks and their annotations into the review prompt.
+# This does not replace branch protection and does not turn a flaky test into a
+# model-authored blocker.
+# Checks here: `test` and `lint` (required by the master ruleset), `audit` (not
+# required by design), `auto-merge` (Dependabot PRs only).
+ci:
+  enabled: true
+  ignore_checks: []
+
+# Optional SHA-pinned API/client/documentation repositories. Enable only after
+# creating context/repositories.json; cross-repo private access requires the
+# optional context_token secret in the consumer workflow.
+context:
+  enabled: false
+  manifest: context/repositories.json
+
+# Review engine: agent-review (the default) | code-review. Leave this block out for
+# agent-review. Uncomment it only for code-review: plugin 1.0.0 cannot load a config that has it.
+# code_review keys: effort low|medium|high|xhigh|max, model opus|sonnet|haiku,
+# replaces and always are lists of agent ids; max_findings is optional (an integer >= 1 or all).
+engine:
+  name: code-review
+  code_review:
+    effort: xhigh
+    model: opus
+    replaces: [architecture, simplification]
+    always: [security, testing, standards]
+    # max_findings: 15   # optional; leave out to use /code-review's own cap
+
+# Where reviews run: local | local-and-ci (the default). Leave this key out for local-and-ci.
+# Uncomment it only for local: plugin 1.0.0 cannot load a config that has it.
+reviews_run: local
+
+# People-only approval. The bot never approves a PR that needs a person. Leave this block out
+# unless the repo sets it; both keys are optional (always defaults to false, paths to []).
+# human_approval:
+#   always: false   # true: every PR in this repo needs a person's approval
+#   paths: ['app/payments/**']   # a PR that touches any of these globs needs a person's approval
+
+# Reports approve by default (`advisory`). Set `shadow` to post advice only; the
+# review workflow refuses a caller whose rollout_mode disagrees with this value,
+# so change the caller templates and this key together. `agent-review rollout`
+# still scores the seeded suite and dismissal telemetry for teams that want the
+# gate before turning approval on.
+rollout:
+  mode: advisory
+  label: agent-review
+  minimum_evaluated_runs: 50
+  minimum_dispositions: 30
+  thresholds:
+    dismissal_rate: 0.35
+    false_positive_dismissal_rate: 0.20
+
+# ── Index layer: file-level import graph for impact analysis ──────────────────
+index: { enabled: false, path: '.claude/review/index' } # impact analysis parses ES/CJS imports only; this repo is Ruby
+
+# ── Learning layer: approval-gated feedback loop ──────────────────────────────
+learning:
+  enabled: true
+  path: '.claude/review/learnings'
+  approval_required: true # not yet enforced — reserved; promotion is always approval-gated today
+  min_support: 3
+  scope: local # not yet enforced — reserved (local | shared)
+
+enforcement:
+  mode: warn # warn | block — reserved for future merge-gating

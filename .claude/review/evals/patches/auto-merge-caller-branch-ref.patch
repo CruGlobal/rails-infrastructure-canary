@@ -1,0 +1,13 @@
+diff --git a/.github/workflows/dependabot-auto-merge.yml b/.github/workflows/dependabot-auto-merge.yml
+index d57914d..d3370c8 100644
+--- a/.github/workflows/dependabot-auto-merge.yml
++++ b/.github/workflows/dependabot-auto-merge.yml
+@@ -10,7 +10,7 @@ permissions:
+ 
+ jobs:
+   auto-merge:
+-    uses: CruGlobal/.github/.github/workflows/dependabot-auto-merge-security-patch.yml@v2 # released tag (house style per the v2.0.0 re-pin wave); rides patch releases, e.g. the .github#449 alert-lookup fix
++    uses: CruGlobal/.github/.github/workflows/dependabot-auto-merge-security-patch.yml@main
+     secrets:
+       AUTOMERGE_APP_ID: ${{ secrets.AUTOMERGE_APP_ID }}
+       AUTOMERGE_APP_PRIVATE_KEY: ${{ secrets.AUTOMERGE_APP_PRIVATE_KEY }}

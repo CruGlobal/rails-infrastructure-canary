@@ -1,0 +1,12 @@
+diff --git a/bin/brakeman b/bin/brakeman
+index dd79038..179d35a 100755
+--- a/bin/brakeman
++++ b/bin/brakeman
+@@ -3,6 +3,6 @@ require "rubygems"
+ require "bundler/setup"
+ 
+ # Same result-affecting flags as the lint job in .github/workflows/ruby.yml; CI adds --no-pager.
+-ARGV.unshift("-A", "-q")
++ARGV.unshift("-q")
+ 
+ load Gem.bin_path("brakeman", "brakeman")

@@ -1,0 +1,13 @@
+diff --git a/Dockerfile b/Dockerfile
+index fa48f85..61bfe56 100644
+--- a/Dockerfile
++++ b/Dockerfile
+@@ -17,7 +17,7 @@ RUN apk upgrade --no-cache
+ # Install rails/app dependencies
+ RUN apk --no-cache add sqlite-libs tzdata vips jemalloc
+ 
+-ENV LD_PRELOAD="/usr/lib/libjemalloc.so.2"
++RUN export LD_PRELOAD="/usr/lib/libjemalloc.so.2"
+ 
+ # Copy dependency definitions and lock files
+ COPY Gemfile Gemfile.lock .ruby-version ./

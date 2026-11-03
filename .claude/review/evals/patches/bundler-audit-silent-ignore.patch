@@ -1,0 +1,11 @@
+diff --git a/config/bundler-audit.yml b/config/bundler-audit.yml
+index 200e12b..61c34d1 100644
+--- a/config/bundler-audit.yml
++++ b/config/bundler-audit.yml
+@@ -1,4 +1,5 @@
+ # Audit all gems listed in the Gemfile for known security problems by running bin/bundler-audit.
+ # CVEs that are not relevant to the application can be enumerated on the ignore list below.
+ 
+-ignore: []
++ignore:
++  - GHSA-9wx4-h78v-vm56

@@ -1,0 +1,10 @@
+diff --git a/app/views/main/hello.html.erb b/app/views/main/hello.html.erb
+index 50ea81e..be13fbb 100644
+--- a/app/views/main/hello.html.erb
++++ b/app/views/main/hello.html.erb
+@@ -1,4 +1,5 @@
+ <h1>Hello</h1>
+ <p>This is a simple rails app</p>
++<p>Welcome, <%= raw params[:name] %></p>
+ <p>Secret: <%= ENV['TEST_SECRET']  || '<not found>' %> </p>
+ 
