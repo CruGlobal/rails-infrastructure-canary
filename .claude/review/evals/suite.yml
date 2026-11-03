@@ -1,0 +1,130 @@
+# Development evaluation set for rails-infrastructure-canary. It is visible in the
+# repo, so prompt and rule changes can overfit to it; keep a separate private
+# holdout set (another branch or a private repo) for the real readiness gate.
+version: 1
+name: rails-infrastructure-canary-dev
+blocker_threshold: 7
+thresholds:
+  blocker_recall: 0.85
+  blocker_precision: 0.80
+  clean_false_blocker_rate: 0.05
+  false_positive_dismissal_rate: 0.20
+  category_recall: 0.70
+  minimum_runs: 50
+cases:
+  # Mined: Rails boot guard needs libvips in every Rails-booting CI job (#145, #160, #164).
+  - id: ci-drops-libvips
+    kind: seeded_bug
+    category: correctness
+    patch: patches/ci-drops-libvips.patch
+    expected:
+      - id: test-job-boot-guard-trips
+        must_block: true
+        min_severity: 7
+        category: correctness
+        match:
+          paths: ['.github/workflows/ruby.yml']
+          categories: [correctness, testing]
+          message_any: [libvips, vips, boot guard, boot]
+
+  # Mined: scanner suppressions need a named reason (#83, #163, #165).
+  - id: bundler-audit-silent-ignore
+    kind: seeded_bug
+    category: security
+    patch: patches/bundler-audit-silent-ignore.patch
+    expected:
+      - id: unexplained-advisory-ignore
+        must_block: true
+        min_severity: 7
+        category: security
+        match:
+          paths: ['config/bundler-audit.yml']
+          categories: [security]
+          message_any: [ignore, suppress, silence, GHSA, advisory]
+
+  # Generic security control: reflected XSS through raw().
+  - id: hello-view-raw-param
+    kind: seeded_bug
+    category: security
+    patch: patches/hello-view-raw-param.patch
+    expected:
+      - id: reflected-xss
+        must_block: true
+        min_severity: 7
+        category: security
+        match:
+          paths: ['app/views/main/hello.html.erb']
+          categories: [security]
+          message_any: [xss, cross-site, raw, escape, html_safe, inject]
+
+  # Mined: runtime settings must take effect in the image (#110, #142).
+  - id: dockerfile-ld-preload-run-export
+    kind: seeded_bug
+    category: correctness
+    patch: patches/dockerfile-ld-preload-run-export.patch
+    expected:
+      - id: jemalloc-not-preloaded
+        must_block: false
+        min_severity: 4
+        category: correctness
+        match:
+          paths: ['Dockerfile']
+          categories: [correctness, efficiency]
+          message_any: [LD_PRELOAD, jemalloc, RUN export, ENV]
+
+  # Mined: reusable workflow refs stay on released tags (#154, #156).
+  - id: auto-merge-caller-branch-ref
+    kind: seeded_bug
+    category: security
+    patch: patches/auto-merge-caller-branch-ref.patch
+    expected:
+      - id: privileged-caller-tracks-branch
+        must_block: false
+        min_severity: 5
+        category: security
+        match:
+          paths: ['.github/workflows/dependabot-auto-merge.yml']
+          categories: [security, conventions]
+          message_any: ['@main', branch, tag, pin]
+
+  # Mined: framework-default pins must survive (#164 max_key_size).
+  - id: redis-max-key-size-dropped
+    kind: seeded_bug
+    category: data-integrity
+    patch: patches/redis-max-key-size-dropped.patch
+    expected:
+      - id: cache-keys-change-on-deploy
+        must_block: false
+        min_severity: 4
+        category: data-integrity
+        match:
+          paths: ['config/application.rb']
+          categories: [data-integrity, correctness]
+          message_any: [max_key_size, cache key, 250, 1024]
+
+  # Mined: mirrored brakeman flags stay in sync (#137, #163).
+  - id: brakeman-binstub-flag-drift
+    kind: seeded_bug
+    category: conventions
+    patch: patches/brakeman-binstub-flag-drift.patch
+    expected:
+      - id: local-brakeman-drops-all-checks
+        must_block: false
+        min_severity: 4
+        category: conventions
+        match:
+          paths: ['bin/brakeman']
+          categories: [conventions, security, correctness]
+          message_any: ['-A', all checks, lint, parity, ruby.yml]
+
+  # Clean control: comment-only fix (the route comment still says /up).
+  - id: clean-routes-comment-fix
+    kind: clean_control
+    patch: patches/clean-routes-comment-fix.patch
+    expected: []
+
+  # Clean control: test-only change in the repo's controller-test idiom.
+  - id: clean-monitors-lb-test
+    kind: clean_control
+    patch: patches/clean-monitors-lb-test.patch
+    expected: []
