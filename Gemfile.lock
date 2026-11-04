@@ -98,14 +98,14 @@ GEM
     concurrent-ruby (1.3.7)
     connection_pool (3.0.2)
     crass (1.0.8)
-    datadog (2.42.0)
+    datadog (2.48.0)
       cgi
-      datadog-ruby_core_source (~> 3.5, >= 3.5.5)
-      libdatadog (~> 40.0.0.2.0)
-      libddwaf (~> 1.30.0.0.0)
+      datadog-ruby_core_source (~> 3.5, >= 3.5.6)
+      libdatadog (~> 46.1.0.1.1)
+      libddwaf (~> 1.30.0.1.0)
       logger
       msgpack
-    datadog-ruby_core_source (3.5.5)
+    datadog-ruby_core_source (3.5.6)
     date (3.5.1)
     debug (1.8.0)
       irb (>= 1.5.0)
@@ -139,11 +139,11 @@ GEM
       activesupport (>= 7.0.0)
     json (2.21.2)
     language_server-protocol (3.17.0.5)
-    libdatadog (40.0.0.2.0)
-    libdatadog (40.0.0.2.0-x86_64-linux)
-    libddwaf (1.30.0.0.2)
+    libdatadog (46.1.0.1.1)
+    libdatadog (46.1.0.1.1-x86_64-linux)
+    libddwaf (1.30.0.1.0)
       ffi (~> 1.0)
-    libddwaf (1.30.0.0.2-x86_64-linux)
+    libddwaf (1.30.0.1.0-x86_64-linux)
       ffi (~> 1.0)
     lint_roller (1.1.0)
     logger (1.7.0)
@@ -295,9 +295,9 @@ GEM
       logger
       rack (>= 2.2.4)
       redis-client (>= 0.22.2)
-    sqlite3 (2.9.6)
+    sqlite3 (2.10.2)
       mini_portile2 (~> 2.8.0)
-    sqlite3 (2.9.6-x86_64-linux-musl)
+    sqlite3 (2.10.2-x86_64-linux-musl)
     standard (1.51.1)
       language_server-protocol (~> 3.17.0.2)
       lint_roller (~> 1.0)
@@ -398,8 +398,8 @@ CHECKSUMS
   concurrent-ruby (1.3.7) sha256=4412caec3a5ea2e5fdc52076724c071a81f2c0593d83b2ac8cbb8ca63b3151b0
   connection_pool (3.0.2) sha256=33fff5ba71a12d2aa26cb72b1db8bba2a1a01823559fb01d29eb74c286e62e0a
   crass (1.0.8) sha256=7a0145c7a2c59f8e7923b3a69ce819c444823a00a5127d805298fea13be24efe
-  datadog (2.42.0) sha256=b546d98026efbbe6abe5e30fa8f6e9ae458482279889ff62f6e59dd73f32fc8c
-  datadog-ruby_core_source (3.5.5) sha256=5df55ea06feda22e5d4b7db62a70f19a86660bd06d3a3ff739d2f549eaff45e6
+  datadog (2.48.0) sha256=0bf955f306ce997ba825d14bbf176872d605a3d810fa5d284f0adc9bb4d804c3
+  datadog-ruby_core_source (3.5.6) sha256=07d8909b9314af709da80966cf7e160da19ca1c396a8f45d175615f675a89569
   date (3.5.1) sha256=750d06384d7b9c15d562c76291407d89e368dda4d4fff957eb94962d325a0dc0
   debug (1.8.0) sha256=502bd1ad41a9a4b51f557f181cd13650c746390a82b5d11a5d2c81600ca013da
   dogstatsd-ruby (5.7.1) sha256=d2e211f9635d6bbe773e152e00fd4cb9f165d26e10356dbef8f917f7a9e5d58c
@@ -418,10 +418,10 @@ CHECKSUMS
   jbuilder (2.15.1) sha256=2430bec28fb0cebacb5875b1009cf9d8bc3c303ccb810c4c8b062a4b51457637
   json (2.21.2) sha256=1f1d3b7cf2b3ba1a69beca0bb6db13d5438b80bff3cd54cdaaa620b9b07c1c6a
   language_server-protocol (3.17.0.5) sha256=fd1e39a51a28bf3eec959379985a72e296e9f9acfce46f6a79d31ca8760803cc
-  libdatadog (40.0.0.2.0) sha256=235197c78fca10162970bbdf9178f6efd5ef8a94ada6fe1aaecd9075d0732cad
-  libdatadog (40.0.0.2.0-x86_64-linux) sha256=b63186df77ca5cf471006548e6b06aca13363c13bf9ef74c73c9356490b6f81c
-  libddwaf (1.30.0.0.2) sha256=f6dd8d70f1925acce795ad0e974b12cb532c958056ac14e497f13d8c1af143d2
-  libddwaf (1.30.0.0.2-x86_64-linux) sha256=d6f628bfb91a7f89a4ef702c3fce3991ec0678c50031128b70799fde8362111d
+  libdatadog (46.1.0.1.1) sha256=0129262ca0595292716140e330f9e68d9aa3a047804918ab15a209273adee03e
+  libdatadog (46.1.0.1.1-x86_64-linux) sha256=a57573ebc623fcdd5ee991da293257d6e342378000e33d327c395304c98249ca
+  libddwaf (1.30.0.1.0) sha256=331632114ef21cc2538d93335ad0b1a6f37de448b5ce9d091a690eec321308d3
+  libddwaf (1.30.0.1.0-x86_64-linux) sha256=5cd88c67ed8703cdc9878e089e4eea679d3825cec18de2a9b6093e489fa900eb
   lint_roller (1.1.0) sha256=2c0c845b632a7d172cb849cc90c1bce937a28c5c8ccccb50dfd46a485003cc87
   logger (1.7.0) sha256=196edec7cc44b66cfb40f9755ce11b392f21f7967696af15d274dde7edff0203
   lograge (0.14.0) sha256=42371a75823775f166f727639f5ddce73dd149452a55fc94b90c303213dc9ae1
@@ -478,8 +478,8 @@ CHECKSUMS
   securerandom (0.4.1) sha256=cc5193d414a4341b6e225f0cb4446aceca8e50d5e1888743fac16987638ea0b1
   sidekiq (7.3.9) sha256=1108712e1def89002b28e3545d5ae15d4a57ffd4d2c25d97bb1360988826b5a7
   sidekiq-pro (7.3.6) sha256=502aae85b41a7dd3de973b7a05a560437628b70aeb59784370cd65a761945cfa
-  sqlite3 (2.9.6) sha256=956fe606956420d04ac7157d3ace620c8caba2135b2e05c76e483493da24d08e
-  sqlite3 (2.9.6-x86_64-linux-musl) sha256=d493b11818a3573387a1d56e1ee8fa00da23a683a7a1cc063e7a0feeed843abf
+  sqlite3 (2.10.2) sha256=f1ea68cd3287f8a49f39a088ac9e4bd0ef4e7f394c3d4a60dd4c7e44b0566964
+  sqlite3 (2.10.2-x86_64-linux-musl) sha256=b9f8fc62f3e0eb8966b41de251b492b4c8e9d1b23559beb6e150ad7f8d590941
   standard (1.51.1) sha256=6d0d98a1fac26d660393f37b3d9c864632bb934b17abfa23811996b20f87faf2
   standard-custom (1.0.2) sha256=424adc84179a074f1a2a309bb9cf7cd6bfdb2b6541f20c6bf9436c0ba22a652b
   standard-performance (1.8.0) sha256=ed17b7d0e061b2a19a91dd434bef629439e2f32310f22f26acb451addc92b788
