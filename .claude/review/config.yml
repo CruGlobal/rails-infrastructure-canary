@@ -75,8 +75,7 @@ risk:
     - { glob: 'app/**', points: 1, tier: medium }
     - { glob: 'lib/**', points: 1, tier: medium }
     - { glob: 'bin/**', points: 1, tier: medium }
-    # Explicit 0-point entries: documentation of intent, not scoring behavior.
-    - { glob: 'test/**', points: 0, tier: low }
+    - { glob: 'test/**', points: 1, tier: medium }
 
   # Unknown paths are not zero-risk. Each non-excluded file that matches none of
   # the patterns above gets this many points, preventing a newly introduced
@@ -380,6 +379,9 @@ excluded_paths:
   - 'log/**'
   - 'tmp/**'
   - 'storage/**'
+  - '.claude/review/learnings/feedback.jsonl'
+  - '.claude/review/metrics/**'
+  - '.claude/review/index/**'
 
 # ── Deterministic evidence ────────────────────────────────────────────────────
 # ast-grep runs trusted, repo-authored AST rules before the model. Only matches
