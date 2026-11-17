@@ -12,3 +12,6 @@ config/credentials.yml.enc diff=rails_credentials
 # the app's Ruby and flip the repo's primary language to HTML, which drops it
 # from the org:CruGlobal language:ruby queries scoping org secrets/variables.
 public/** linguist-vendored
+
+# agent-review appends a line per fixed or dismissed finding; keep both sides on a local merge.
+.claude/review/learnings/feedback.jsonl merge=union

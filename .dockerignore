@@ -55,3 +55,8 @@
 node_modules
 vendor/bundle
 vendor/cache
+
+# Ignore agent-review config, rules and eval patches, and the Claude Code guides
+/.claude
+**/CLAUDE.md
+**/AGENTS.md
