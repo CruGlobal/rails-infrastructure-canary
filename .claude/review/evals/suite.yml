@@ -57,6 +57,29 @@ cases:
           categories: [security]
           message_any: [xss, cross-site, raw, escape, html_safe, inject]
 
+  # Mined: the Sidekiq Pro login stays a BuildKit secret (#174, #175).
+  - id: sidekiq-creds-build-arg-returns
+    kind: seeded_bug
+    category: security
+    patch: patches/sidekiq-creds-build-arg-returns.patch
+    expected:
+      - id: login-baked-into-image
+        must_block: true
+        min_severity: 7
+        category: security
+        match:
+          paths: ['Dockerfile']
+          categories: [security, secret, credential]
+          message_any: [SIDEKIQ_CREDS, bundle config, .bundle, credential, contribsys]
+      - id: login-passed-as-build-arg
+        must_block: true
+        min_severity: 7
+        category: security
+        match:
+          paths: ['build.sh']
+          categories: [security, secret, credential]
+          message_any: [SIDEKIQ_CREDS, build-arg, build arg, credential, contribsys]
+
   # Mined: runtime settings must take effect in the image (#110, #142).
   - id: dockerfile-ld-preload-run-export
     kind: seeded_bug
