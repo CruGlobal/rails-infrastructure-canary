@@ -5,13 +5,13 @@ Repo-specific specialist lane (not one of the six core agents). It covers how th
 **Container image, boot and deploy path**
 
 - Files: `Dockerfile` (ruby alpine from public.ecr.aws, `RUBY_VERSION` build arg), `build.sh`, `bin/docker-entrypoint`, `bin/thrust`, `.dockerignore`
-- `build.sh` derives `RUBY_VERSION` from `.ruby-version` and passes `SIDEKIQ_CREDS`. The base image tag, `.ruby-version` and the Gemfile's `ruby file: ".ruby-version"` must move together; nothing else may hardcode a Ruby version
+- `build.sh` derives `RUBY_VERSION` from `.ruby-version` and passes `SIDEKIQ_CREDS` as a BuildKit secret (`--secret id=sidekiq_creds,env=SIDEKIQ_CREDS`), never as a `--build-arg`. The base image tag, `.ruby-version` and the Gemfile's `ruby file: ".ruby-version"` must move together; nothing else may hardcode a Ruby version
 - Runtime stays non-root (`USER webapp`), jemalloc via `ENV LD_PRELOAD`, `vips` apk installed. Look for: `apk` removals of `vips` or `jemalloc`; `USER` moved above the `chown`; assets or bootsnap steps reordered so the `chown` stores a second copy of the cache
 - `CMD ["./bin/thrust", "./bin/rails", "server"]` and `EXPOSE 80`: Thruster listens on 80 and proxies to Puma on 3000 (`port ENV.fetch("PORT", 3000)` in `config/puma.rb`). Changing either port, or `RAILS_MAX_THREADS` semantics, needs the cru-terraform side checked
 - `ENV LOG_REQUESTS="false"` must stay. Thruster's request log is a Go slog JSON stream that would interleave with the Ougai/lograge stream, which the Datadog log pipeline is keyed on, and it would re-log the silenced health check
 - `bin/docker-entrypoint` runs `db:prepare` when the last two args are `./bin/rails server`, but the Dockerfile sets no `ENTRYPOINT`, so the script runs only if the ECS task definition sets one. Look for a change that assumes the entrypoint runs, or that edits the arg matching without checking it against the real CMD
 - `.dockerignore` deliberately does NOT ignore `.env` (the committed `.env` supplies `SECRET_KEY_BASE`/`RAILS_ENV` to `assets:precompile`). Look for anything that adds a real value to `.env`, or removes the comment explaining the divergence
-- The contribsys credential flows through `ARG SIDEKIQ_CREDS` into `bundle config --global`. Look for a new ARG/ENV that carries a secret into a layer, or a `bundle config` written after `COPY . .`
+- The contribsys credential reaches only the `bundle install` RUN, through `RUN --mount=type=secret,id=sidekiq_creds,env=BUNDLE_GEMS__CONTRIBSYS__COM`, and that same RUN removes `/root/.bundle` (Bundler names its index cache folder there after the source URL, username included). Look for: `ARG SIDEKIQ_CREDS` or `--build-arg SIDEKIQ_CREDS` coming back, a `bundle config` that stores the credential, a new ARG/ENV that carries a secret into a layer, the mount moved off the `bundle install` RUN, or the `rm -rf /root/.bundle` dropped. Fleet apps copy this shape, so a change here must stay copyable
 
 **Gemfile pins, floors and boot guards**
 
