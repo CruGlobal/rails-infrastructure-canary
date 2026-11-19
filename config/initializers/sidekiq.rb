@@ -9,7 +9,7 @@ Sidekiq.configure_client do |config|
   config.redis = redis_settings
 end
 
-Sidekiq::Client.reliable_push! if Sidekiq::Client.method_defined? :reliable_push!
+Sidekiq::Client.reliable_push! if Sidekiq::Client.respond_to?(:reliable_push!)
 
 Sidekiq.configure_server do |config|
   config.super_fetch!
