@@ -107,9 +107,9 @@ GEM
       msgpack
     datadog-ruby_core_source (3.5.6)
     date (3.5.1)
-    debug (1.8.0)
-      irb (>= 1.5.0)
-      reline (>= 0.3.1)
+    debug (1.11.1)
+      irb (~> 1.10)
+      reline (>= 0.3.8)
     dogstatsd-ruby (5.7.1)
     dotenv (3.1.8)
     dotenv-rails (3.1.8)
@@ -401,7 +401,7 @@ CHECKSUMS
   datadog (2.48.0) sha256=0bf955f306ce997ba825d14bbf176872d605a3d810fa5d284f0adc9bb4d804c3
   datadog-ruby_core_source (3.5.6) sha256=07d8909b9314af709da80966cf7e160da19ca1c396a8f45d175615f675a89569
   date (3.5.1) sha256=750d06384d7b9c15d562c76291407d89e368dda4d4fff957eb94962d325a0dc0
-  debug (1.8.0) sha256=502bd1ad41a9a4b51f557f181cd13650c746390a82b5d11a5d2c81600ca013da
+  debug (1.11.1) sha256=2e0b0ac6119f2207a6f8ac7d4a73ca8eb4e440f64da0a3136c30343146e952b6
   dogstatsd-ruby (5.7.1) sha256=d2e211f9635d6bbe773e152e00fd4cb9f165d26e10356dbef8f917f7a9e5d58c
   dotenv (3.1.8) sha256=9e1176060ced581f8e6ce4384e91361817763a76e3c625c8bddc18b35bd392c3
   dotenv-rails (3.1.8) sha256=46c9d1226a8b58a83b5f61325aa8cffd25cea1c0fafdfbbbee1e5dfea77980c4

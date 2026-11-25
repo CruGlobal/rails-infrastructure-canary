@@ -14,6 +14,8 @@ gem "propshaft"
 gem "sqlite3", ">= 2.1"
 
 # Use the Puma web server [https://github.com/puma/puma]
+# Floor only, the Rails default: Gemfile.lock picks the version. Do not pin an
+# exact version here; an exact pin stops security bumps from reaching the lock.
 gem "puma", ">= 5.0"
 # Use JavaScript with ESM import maps [https://github.com/rails/importmap-rails]
 gem "importmap-rails"
